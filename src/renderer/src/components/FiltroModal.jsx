@@ -18,18 +18,6 @@ import { ZonasSeleccionadasAtom } from '../atoms/ZonasSeleccionadasAtom';
 import { ProveedoresAtom } from '../atoms/ProveedoresAtom';
 import { MateriaPrimaAtom } from '../atoms/MateriaPrimaAtom';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 600,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-
-};
 
 
 export default function FiltroModal({abrir = false, setOpen}) {
@@ -104,130 +92,95 @@ export default function FiltroModal({abrir = false, setOpen}) {
 
   }, [])
   return (
-    <div>
-      <Modal
-        open={abrir}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-            <Box>
-              <FormControl sx={{ m: 1}} fullWidth>
-                <InputLabel id="demo-multiple-chip-label">Zona</InputLabel>
-                <Select
-                  labelId="demo-multiple-chip-label"
-                  id="demo-multiple-chip"
-                  multiple
-                  value={nombreZona}
-                  onChange={handleChangeZona}
-                  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {zonas.map((zona) => (
-                    <MenuItem 
-                    key={zona.name} 
-                    value={zona.name}
-                    >
-                      <Checkbox checked={nombreZona.indexOf(zona.name) > -1} />
-                      <ListItemText primary={zona.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+      <Box flexDirection={'row'} display={'flex'} minWidth={'70vw'} maxWidth={'90vw'}>
+        <FormControl sx={{ m: 1, width: 300}} >
+          <InputLabel id="demo-multiple-chip-label">Zona</InputLabel>
+          <Select
+            labelId="demo-multiple-checkbox-label"
+            id="demo-multiple-checkbox"
+            multiple
+            value={nombreZona}
+            onChange={handleChangeZona}
+            input={<OutlinedInput label="Tag" />}
+            renderValue={(selected) => selected.join(', ')}
+            MenuProps={MenuProps}
+          >
+            {zonas.map((zona) => (
+              <MenuItem 
+              key={zona.name} 
+              value={zona.name}
+              >
+                <Checkbox checked={nombreZona.indexOf(zona.name) > -1} />
+                <ListItemText primary={zona.name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-              <FormControl sx={{ m: 1}} fullWidth>
-                <InputLabel id="demo-multiple-chip-label">Proveedor</InputLabel>
-                <Select
-                  labelId="demo-multiple-chip-label"
-                  id="demo-multiple-chip"
-                  multiple
-                  value={proveedorCedula}
-                  onChange={handleChangeProveedor}
-                  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {proveedores.map((proveedor) => (
-                    <MenuItem 
-                    key={proveedor.ci} 
-                    value={proveedor.ci}
-                    >
-                      <Checkbox checked={proveedorCedula.indexOf(proveedor.ci) > -1} />
-                      <ListItemText primary={proveedor.ci + '- ' + proveedor.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl> 
-              <FormControl sx={{ m: 1}} fullWidth>
-                <InputLabel id="demo-multiple-chip-label">Materia Prima</InputLabel>
-                <Select
-                  labelId="demo-multiple-chip-label"
-                  id="demo-multiple-chip"
-                  multiple
-                  value={materiaPrima}
-                  onChange={handleChangeMateriaPrima}
-                  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
-                    </Box>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {materiasPrima.map((item) => (
-                    <MenuItem 
-                    key={item.codigo} 
-                    value={item.codigo}
-                    >
-                      <Checkbox checked={materiaPrima.indexOf(item.codigo) > -1} />
-                      <ListItemText primary={item.codigo + '- ' + item.materia_prima} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+        <FormControl sx={{ m: 1, width: 300}}>
+          <InputLabel id="demo-multiple-chip-label">Proveedor</InputLabel>
+          <Select
+            labelId="demo-multiple-checkbox-label"
+            id="demo-multiple-checkbox"
+            multiple
+            value={proveedorCedula}
+            onChange={handleChangeProveedor}
+            input={<OutlinedInput label="Tag" />}
+            renderValue={(selected) => selected.join(', ')}
+            MenuProps={MenuProps}
+          >
+            {proveedores.map((proveedor) => (
+              <MenuItem 
+              key={proveedor.ci} 
+              value={proveedor.ci}
+              >
+                <Checkbox checked={proveedorCedula.indexOf(proveedor.ci) > -1} />
+                <ListItemText primary={proveedor.ci + '- ' + proveedor.name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl> 
+        <FormControl sx={{ m: 1, width: 300}}>
+          <InputLabel id="demo-multiple-chip-label">Materia Prima</InputLabel>
+          <Select
+            labelId="demo-multiple-checkbox-label"
+            id="demo-multiple-checkbox"
+            multiple
+            value={materiaPrima}
+            onChange={handleChangeMateriaPrima}
+            input={<OutlinedInput label="Tag" />}
+            renderValue={(selected) => selected.join(', ')}
+            MenuProps={MenuProps}
+          >
+            {materiasPrima.map((item) => (
+              <MenuItem 
+              key={item.codigo} 
+              value={item.codigo}
+              >
+                <Checkbox checked={materiaPrima.indexOf(item.codigo) > -1} />
+                <ListItemText primary={item.codigo + '- ' + item.materia_prima} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-              
-              {DrawerTitle == 'Reporte Flete'?
-                <FormControl fullWidth sx={{margin:'5px'}}>
-                  <InputLabel id="demo-simple-select-label">Chofer</InputLabel>
-                  <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={chofer}
-                  label="Age"
-                  onChange={handleChangeChofer}
-                  >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>: ''}
-            </Box>
-            <Box>
-              <Button
-              onClick={() => {
-                handleClose()
-              }}>Aceptar</Button>
-            </Box>
-        </Box>
-      </Modal>
-    </div>
+        {DrawerTitle == 1?
+          <FormControl sx={{ m: 1, width: 300}}>
+            <InputLabel id="demo-simple-select-label">Chofer</InputLabel>
+            <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={chofer}
+            label="Age"
+            onChange={handleChangeChofer}
+            >
+            <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>: ''
+        }
+      </Box>
   );
 }
 
@@ -249,14 +202,6 @@ const MenuProps = {
   },
 };
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 var materiasPrima = [
   {
     "materia_prima": "SARDINA FRESCAR CORTADA",

@@ -21,6 +21,8 @@ import Configuracion from './Configuracion';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { DrawerTitleAtom } from '../atoms/DrawerTitle';
+import { useAtom } from 'jotai';
 
 const drawerWidth = 240;
 
@@ -82,7 +84,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function DrawerReporte() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [indexDrawer, setIndexDrawer] = useState(0)
+  const [indexDrawer, setIndexDrawer] = useAtom(DrawerTitleAtom)
 
   const handleDrawerOpen = () => {
     setOpen(true);

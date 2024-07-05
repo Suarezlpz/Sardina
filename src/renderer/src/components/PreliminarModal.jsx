@@ -6,18 +6,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useAtomValue, useAtom } from 'jotai'
 import { DatosProcesadosAtom } from '../atoms/DatosProcesadosAtom';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '90%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-
-};
 
 const columns = [
     { 
@@ -74,14 +62,8 @@ export default function PreliminarModal({abrir = false, setOpen}) {
   const rows = datoProcesado;
 
   return (
-    <div>
-      <Modal
-        open={abrir}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
+  
+        <Box>
             <Box sx={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={rows}
@@ -99,11 +81,9 @@ export default function PreliminarModal({abrir = false, setOpen}) {
                 />
             </Box>
           
-          <Button variant="text"
+          {/*<Button variant="text"
             onClick={() => handleClose()}
-          >Cerrar</Button>
+          >Cerrar</Button>*/}
         </Box>
-      </Modal>
-    </div>
   );
 }

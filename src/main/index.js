@@ -14,8 +14,8 @@ let options = {
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: '100%',
+    height: '100%',
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -24,6 +24,8 @@ function createWindow() {
       sandbox: false
     }
   })
+
+  mainWindow.maximize();
 
   if (require('electron-squirrel-startup')) app.quit();
 

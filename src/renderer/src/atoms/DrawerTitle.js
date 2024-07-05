@@ -1,3 +1,3 @@
 import { atom } from 'jotai'
 
-export const DrawerTitleAtom = atom('Seleccione algun Reporte')
+export const DrawerTitleAtom = atom(0)
