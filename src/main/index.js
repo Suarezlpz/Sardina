@@ -65,7 +65,7 @@ app.whenReady().then(() => {
 
   //ipcMain.handle('get-excel', async (event, someArgument) => {
   //  console.log(process.resourcesPath)
-   
+
   //  return JSON.parse(messages[0])
  // })
 

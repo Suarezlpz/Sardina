@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -13,11 +13,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Reportes from './Reporte';
-import { useAtomValue, useAtom } from 'jotai';
-import { DrawerTitleAtom } from '../atoms/DrawerTitle';
+import Configuracion from './Configuracion';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import WidgetsIcon from '@mui/icons-material/Widgets';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const drawerWidth = 240;
 
@@ -79,7 +82,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function DrawerReporte() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [titleDrawer, setTitleDrawer] = useAtom(DrawerTitleAtom)
+  const [indexDrawer, setIndexDrawer] = useState(0)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -89,6 +92,11 @@ export default function DrawerReporte() {
     setOpen(false);
   };
 
+  let menuItems = [
+    {"text": 'Reporte Materia Prima', icon: () => <WidgetsIcon />, getChildren: () => <Reportes/>},
+    {"text": 'Reporte Flete', icon: () => <LocalShippingIcon />, getChildren: () => <Reportes/>},
+    {"text": 'Configuracion', icon: () => <SettingsIcon />, getChildren: () => <Configuracion/>},
+  ];
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -110,7 +118,7 @@ export default function DrawerReporte() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            {titleDrawer}
+            {menuItems[indexDrawer].text}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -134,18 +142,25 @@ export default function DrawerReporte() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Reporte Materia Prima', 'Reporte Flete'].map((text, index) => (
-            <ListItem key={text} disablePadding>
+        {
+            menuItems.map((menu, index) => (
+            <ListItem key={menu.text} disablePadding>
               <ListItemButton
-                onClick={() => index % 2 === 0 ? setTitleDrawer(text) : setTitleDrawer(text)}>
-                <ListItemText primary={text} />
+                onClick={() => setIndexDrawer(index)}>
+                <ListItemIcon>
+                    {menu.icon()}
+                </ListItemIcon>
+                <ListItemText primary={menu.text} />
               </ListItemButton>
             </ListItem>
-          ))}
+          ))
+        }
         </List>
       </Drawer>
       <Main open={open}>
-        {titleDrawer == 'Seleccione algun Reporte'? '' : <Reportes/> }
+        {
+            menuItems[indexDrawer].getChildren()
+        }
       </Main>
     </Box>
   );
