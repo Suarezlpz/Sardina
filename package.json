@@ -50,6 +50,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^6.1.7",
     "jotai": "^2.7.2",
+    "material-react-table": "^2.13.0",
     "node-fetch": "^2.6.1",
     "notistack": "^3.0.1",
     "odbc": "^2.4.8",
