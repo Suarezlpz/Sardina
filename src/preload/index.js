@@ -7,7 +7,8 @@ const api = {
   getProveedor: () => ipcRenderer.invoke('get_proveedor'),
   getZona: () => ipcRenderer.invoke('get_zona'),
   getReporteMateriaPrima: (args) => ipcRenderer.invoke('get_reporte_materia_prima', args),
-  getConfiguration: () => ipcRenderer.invoke('get_configuration')
+  getConfiguration: () => ipcRenderer.invoke('get_configuration'),
+  setConfiguration: (args) => ipcRenderer.invoke('set_configuration', args)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

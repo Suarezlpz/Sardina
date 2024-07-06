@@ -4,7 +4,7 @@ const path = require('path')
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { PythonShell } from 'python-shell'
 import icon from '../../resources/icon.png?asset'
-import {readConfigData} from "../services/ConfigService";
+import {readConfigData, writeConfigData} from "../services/ConfigService";
 
 function createWindow() {
   // Create the browser window.
@@ -60,6 +60,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('get_configuration', () => {
     return readConfigData()
+  })
+
+  ipcMain.handle('set_configuration', async (event, someArgument) => {
+    return writeConfigData(someArgument)
   })
 
   ipcMain.handle('get_proveedor', async (event, someArgument) => {
