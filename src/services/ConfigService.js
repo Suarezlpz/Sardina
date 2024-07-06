@@ -2,7 +2,7 @@ import { app } from 'electron';
 import path from 'path';
 import fs from 'fs';
 
-const CONFIG_DATA_PATH = app.isPackaged ? path.join(process.resourcesPath, 'extraResources','config.json') : 'src/config.json';
+const CONFIG_DATA_PATH = app.isPackaged ? path.join(process.resourcesPath, 'extraResources/config','config.json') : 'src/config/config.json';
 
 const readConfigData = () => {
     try {

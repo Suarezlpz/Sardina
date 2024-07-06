@@ -9,15 +9,15 @@
         ]
       },
       {
-        "from": "./src/config",
-        "to": "extraResources",
+        "from": "./src/config/",
+        "to": "extraResources/config",
         "filter": [
           "**/*"
         ]
       }
     ]
   },
-  "name": "proyect-a2-react",
+  "name": "repores_sardina",
   "version": "1.0.0",
   "description": "An Electron application with React",
   "main": "./out/main/index.js",
