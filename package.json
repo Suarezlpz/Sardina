@@ -45,6 +45,7 @@
     "@mui/material": "^6.0.0-alpha.8",
     "@mui/x-data-grid": "^7.1.0",
     "@mui/x-date-pickers": "^7.0.0",
+    "@tanstack/react-table": "^8.19.2",
     "dayjs": "^1.11.10",
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^6.1.7",
@@ -54,6 +55,7 @@
     "odbc": "^2.4.8",
     "python-shell": "^5.0.0",
     "react-hook-form": "^7.52.1",
+    "react-select": "^5.8.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

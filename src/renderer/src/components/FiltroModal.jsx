@@ -16,12 +16,15 @@ import { ProveedoresAtom } from '../atoms/ProveedoresAtom';
 import { MateriaPrimaAtom } from '../atoms/MateriaPrimaAtom';
 import RangoFecha from './RangoFecha';
 
-
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
 
 export default function FiltroModal() {
 
   const [zonas, setZonas] = React.useState([]);
   const [nombreZona, setNombreZona] = useAtom(ZonasSeleccionadasAtom);
+
   const [materiaPrima, setMateriaPrima] = useAtom(MateriaPrimaAtom);
   const [chofer, setChofer] = React.useState('');
 
@@ -34,16 +37,6 @@ export default function FiltroModal() {
       target: { value },
     } = event;
     setProveedorCedula(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
-
-  const handleChangeZona = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setNombreZona(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
@@ -64,7 +57,6 @@ export default function FiltroModal() {
   const handleChangeChofer = (event) => {
     setChofer(event.target.value);
   };
-
 
   useEffect(() => {
 
@@ -89,27 +81,33 @@ export default function FiltroModal() {
   return (
       <Box flexDirection={'row'} display={'flex'} minWidth={'70vw'} maxWidth={'90vw'}>
         <FormControl sx={{ m: 1, width: 300}} >
-          <InputLabel id="demo-multiple-chip-label">Zona</InputLabel>
-          <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
+          <Autocomplete
             multiple
-            value={nombreZona}
-            onChange={handleChangeZona}
-            input={<OutlinedInput label="Tag" />}
-            renderValue={(selected) => selected.join(', ')}
-            MenuProps={MenuProps}
-          >
-            {zonas.map((zona) => (
-              <MenuItem
-              key={zona.name}
-              value={zona.name}
-              >
-                <Checkbox checked={nombreZona.indexOf(zona.name) > -1} />
-                <ListItemText primary={zona.name} />
-              </MenuItem>
-            ))}
-          </Select>
+            limitTags={1}
+            id="checkboxes-tags-demo"
+            options={zonas}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.name}
+            onChange={(event, newValue) => {
+              setNombreZona([ ...newValue ].map(x => x.name));
+            }}
+            renderTags={(tagValue, getTagProps) =>
+              tagValue.map((option, index) => {
+                const { key, ...tagProps } = getTagProps({ index });
+                return (
+                  <Chip
+                    variant="outlined"
+                    key={key}
+                    label={option.name}
+                    {...tagProps}
+                  />
+                );
+              })
+            }
+            renderInput={(params) => (
+              <TextField {...params} label="Zonas" />
+            )}
+          />
         </FormControl>
 
         <FormControl sx={{ m: 1, width: 300}}>

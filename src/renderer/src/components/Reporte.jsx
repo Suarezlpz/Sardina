@@ -53,7 +53,7 @@ export default function Reportes() {
             let proveedorQuery = ""
             let materiaPrimaQuery = ""
 
-            if(zonasSeleccionadas.length > 1) {
+            if(zonasSeleccionadas.length > 0) {
 
               let zonasStringifycadas = []
 
