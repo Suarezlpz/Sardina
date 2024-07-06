@@ -5,7 +5,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import RangoFecha from './RangoFecha';
 import { Button, Stack } from '@mui/material';
 import FiltroModal from './FiltroModal';
 import { ZonasSeleccionadasAtom } from '../atoms/ZonasSeleccionadasAtom';
@@ -14,15 +13,23 @@ import { ProveedoresAtom } from '../atoms/ProveedoresAtom';
 import { MateriaPrimaAtom } from '../atoms/MateriaPrimaAtom';
 import PreliminarModal from './PreliminarModal';
 import { DatosProcesadosAtom } from '../atoms/DatosProcesadosAtom';
+import { fechaInicioAtom, fechaFinAtom } from '../atoms/RangoFecha';
 
 
 export default function Reportes() {
 
-  const [valueActivo, setValueActivo] = React.useState('si');
+  const [valueActivo, setValueActivo] = React.useState('todo');
   const zonasSeleccionadasAtom = useAtomValue(ZonasSeleccionadasAtom)
+  const [zonas, setZonas] = useAtom(ZonasSeleccionadasAtom)
   const proveedores = useAtomValue(ProveedoresAtom)
+  const [proveedoresAtom , setProveedoresAtom] = useAtom(ProveedoresAtom)
   const materiaPrima = useAtomValue(MateriaPrimaAtom)
+  const [materiaPrimaAtom , setMateriaPrimaAtom] = useAtom(MateriaPrimaAtom)
+
   const [datosProcesado, setDatosProcesados] = useAtom(DatosProcesadosAtom)
+
+  const fechaFin = useAtomValue(fechaFinAtom);
+  const fechaInicio = useAtomValue(fechaInicioAtom);
 
   const handleChangeActivo = (event) => {
     setValueActivo(event.target.value);
@@ -32,14 +39,17 @@ export default function Reportes() {
     <Box width={'100%'}>
       <Box maxHeight={'100px'}>
         <FiltroModal/>
-        <Stack spacing={1} justifyContent={'center'} direction={"row"}>
+      </Box>
+      <Box maxHeight={'100px'} display={'flex'}>
+        <Stack spacing={1} direction={"row"} maxWidth={'300px'}>
           <Button
+          sx={{height: 40}}
           variant="contained"
           onClick={() =>{
             let zonaQuery = "";
             let zonasSeleccionadas = zonasSeleccionadasAtom;
             let proveedorStatusQuery = "";
-            let proveedorStatusValue = "";
+            let proveedorStatusValue = valueActivo;
             let proveedorQuery = ""
             let materiaPrimaQuery = ""
 
@@ -85,8 +95,8 @@ export default function Reportes() {
             }
 
             window.api.getReporteMateriaPrima({
-              fechaInicio: '2024-01-01',
-              fechaFin: '2024-05-01',
+              fechaInicio: fechaInicio.format('YYYY-MM-DD'),
+              fechaFin: fechaFin.format('YYYY-MM-DD'),
               zonaQuery: zonaQuery, 
               proveedorStatusQuery: proveedorStatusQuery, 
               proveedorQuery: proveedorQuery,
@@ -107,34 +117,38 @@ export default function Reportes() {
                   zona: row[8],
                 })
               });
-              console.log(zonaQuery, proveedorStatusQuery, proveedorQuery, materiaPrima)
               setDatosProcesados(resultProcesado)
-            
             })
-
-            setOpenPreliminarModal(true);
           }}
           >Filtrar</Button>
           <Button
+          sx={{height: 40}}
           variant="contained">Exportar</Button>
+          <Button
+          sx={{height: 40}}
+          variant="contained"
+          onClick={()=>{
+            setDatosProcesados('');
+            setMateriaPrimaAtom(['']);
+            setProveedoresAtom(['']);
+            setZonas(['']);
+          }}>Limpiar</Button>
         </Stack>
+        <FormControl 
+          sx={{display: 'flex', flexDirection: 'row', maxWidth: '500px'}}>
+          <FormLabel id="demo-controlled-radio-buttons-group" sx={{marginTop: 1, marginBottom: 4, marginLeft: 5, marginRight: 5}}>Proveedor Activo</FormLabel>
+          <RadioGroup
+          sx={{flexDirection: 'row', height: 40}}
+          value={valueActivo}
+          onChange={handleChangeActivo}
+          >
+          <FormControlLabel value="si" label="Si" control={<Radio />}  />
+          <FormControlLabel value="no" control={<Radio />} label="No" />
+          <FormControlLabel value="todo" control={<Radio />} label="Todo" />
+          </RadioGroup>
+        </FormControl>
       </Box>
-      <RangoFecha/>
-      <FormControl 
-                fullWidth
-                sx={{display: 'flex', flexDirection: 'row'}}>
-                <FormLabel id="demo-controlled-radio-buttons-group">Activo</FormLabel>
-                <RadioGroup
-                sx={{flexDirection: 'row'}}
-                value={valueActivo}
-                onChange={handleChangeActivo}
-                >
-                <FormControlLabel value="si" label="Si" control={<Radio />}  />
-                <FormControlLabel value="no" control={<Radio />} label="No" />
-                <FormControlLabel value="todo" control={<Radio />} label="Todo" />
-                </RadioGroup>
-            </FormControl>
-      <PreliminarModal/>
+      <PreliminarModal />
     </Box>
   );
 }

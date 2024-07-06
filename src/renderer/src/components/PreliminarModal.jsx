@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import { DataGrid } from '@mui/x-data-grid';
 import { useAtomValue, useAtom } from 'jotai'
 import { DatosProcesadosAtom } from '../atoms/DatosProcesadosAtom';
@@ -55,35 +53,28 @@ const columns = [
     },
   ];
 
-export default function PreliminarModal({abrir = false, setOpen}) {
+export default function PreliminarModal() {
   const datoProcesado = useAtomValue(DatosProcesadosAtom)
-  const handleClose = () => setOpen(false);
 
   const rows = datoProcesado;
 
   return (
-  
-        <Box>
-            <Box sx={{ height: 400, width: '100%' }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    initialState={{
-                    pagination: {
-                        paginationModel: {
-                        pageSize: 5,
-                        },
-                    },
-                    }}
-                    pageSizeOptions={[5]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
-                />
-            </Box>
-          
-          {/*<Button variant="text"
-            onClick={() => handleClose()}
-          >Cerrar</Button>*/}
-        </Box>
+    <Box sx={{ height: 400, width: '100%' }}>
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+            pagination: {
+                paginationModel: {
+                pageSize: 5,
+                },
+            },
+            }}
+            pageSizeOptions={[5]}
+            checkboxSelection
+            disableRowSelectionOnClick
+        />
+    </Box>
+
   );
 }

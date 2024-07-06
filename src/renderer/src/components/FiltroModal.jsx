@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react'
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
+import { useEffect, useState } from 'react';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -11,16 +9,16 @@ import { DrawerTitleAtom } from '../atoms/DrawerTitle';
 import { useAtomValue, useAtom } from 'jotai';
 import { useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Chip from '@mui/material/Chip';
 import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import { ZonasSeleccionadasAtom } from '../atoms/ZonasSeleccionadasAtom';
 import { ProveedoresAtom } from '../atoms/ProveedoresAtom';
 import { MateriaPrimaAtom } from '../atoms/MateriaPrimaAtom';
+import RangoFecha from './RangoFecha';
 
 
 
-export default function FiltroModal({abrir = false, setOpen}) {
+export default function FiltroModal() {
 
   const [zonas, setZonas] = React.useState([]);
   const [nombreZona, setNombreZona] = useAtom(ZonasSeleccionadasAtom);
@@ -31,8 +29,8 @@ export default function FiltroModal({abrir = false, setOpen}) {
   const [proveedorCedula, setProveedorCedula] = useAtom(ProveedoresAtom);
 
   const theme = useTheme();
-    
-  
+
+ 
   const handleChangeProveedor = (event) => {
     const {
       target: { value },
@@ -68,8 +66,6 @@ export default function FiltroModal({abrir = false, setOpen}) {
   const handleChangeChofer = (event) => {
     setChofer(event.target.value);
   };
-    
-  const handleClose = () => setOpen(false);
 
   useEffect(() => {
 
@@ -180,6 +176,7 @@ export default function FiltroModal({abrir = false, setOpen}) {
             </Select>
           </FormControl>: ''
         }
+        <RangoFecha/>
       </Box>
   );
 }

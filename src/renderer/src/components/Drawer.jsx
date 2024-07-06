@@ -159,7 +159,7 @@ export default function DrawerReporte() {
         }
         </List>
       </Drawer>
-      <Main open={open}>
+      <Main open={open} sx={{marginLeft: 5}}>
         {
             menuItems[indexDrawer].getChildren()
         }
