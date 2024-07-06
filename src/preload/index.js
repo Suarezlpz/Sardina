@@ -6,7 +6,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {
   getProveedor: () => ipcRenderer.invoke('get_proveedor'),
   getZona: () => ipcRenderer.invoke('get_zona'),
-  getReporteMateriaPrima: (args) => ipcRenderer.invoke('get_reporte_materia_prima', args)
+  getReporteMateriaPrima: (args) => ipcRenderer.invoke('get_reporte_materia_prima', args),
+  getConfiguration: () => ipcRenderer.invoke('get_configuration')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

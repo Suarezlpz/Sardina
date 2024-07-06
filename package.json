@@ -49,8 +49,10 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^6.1.7",
     "jotai": "^2.7.2",
+    "node-fetch": "^2.6.1",
     "odbc": "^2.4.8",
     "python-shell": "^5.0.0",
+    "react-hook-form": "^7.52.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

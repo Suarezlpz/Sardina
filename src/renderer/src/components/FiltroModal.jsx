@@ -29,8 +29,6 @@ export default function FiltroModal() {
   const [proveedorCedula, setProveedorCedula] = useAtom(ProveedoresAtom);
 
   const theme = useTheme();
-
- 
   const handleChangeProveedor = (event) => {
     const {
       target: { value },
@@ -67,6 +65,7 @@ export default function FiltroModal() {
     setChofer(event.target.value);
   };
 
+
   useEffect(() => {
 
     let tempProveedores = []
@@ -102,8 +101,8 @@ export default function FiltroModal() {
             MenuProps={MenuProps}
           >
             {zonas.map((zona) => (
-              <MenuItem 
-              key={zona.name} 
+              <MenuItem
+              key={zona.name}
               value={zona.name}
               >
                 <Checkbox checked={nombreZona.indexOf(zona.name) > -1} />
@@ -126,8 +125,8 @@ export default function FiltroModal() {
             MenuProps={MenuProps}
           >
             {proveedores.map((proveedor) => (
-              <MenuItem 
-              key={proveedor.ci} 
+              <MenuItem
+              key={proveedor.ci}
               value={proveedor.ci}
               >
                 <Checkbox checked={proveedorCedula.indexOf(proveedor.ci) > -1} />
@@ -135,7 +134,7 @@ export default function FiltroModal() {
               </MenuItem>
             ))}
           </Select>
-        </FormControl> 
+        </FormControl>
         <FormControl sx={{ m: 1, width: 300}}>
           <InputLabel id="demo-multiple-chip-label">Materia Prima</InputLabel>
           <Select
@@ -149,8 +148,8 @@ export default function FiltroModal() {
             MenuProps={MenuProps}
           >
             {materiasPrima.map((item) => (
-              <MenuItem 
-              key={item.codigo} 
+              <MenuItem
+              key={item.codigo}
               value={item.codigo}
               >
                 <Checkbox checked={materiaPrima.indexOf(item.codigo) > -1} />
