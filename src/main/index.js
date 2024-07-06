@@ -4,12 +4,7 @@ const path = require('path')
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { PythonShell } from 'python-shell'
 import icon from '../../resources/icon.png?asset'
-
-const DBISAM_DATASOURCE = 'MATERIA_PRIMABD'
-let options = {
-  mode: 'text',
-  args: [DBISAM_DATASOURCE]
-}
+import {readConfigData} from "../services/ConfigService";
 
 function createWindow() {
   // Create the browser window.
@@ -62,20 +57,19 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
 
-  //ipcMain.handle('get-excel', async (event, someArgument) => {
-  //  console.log(process.resourcesPath)
-
-  //  return JSON.parse(messages[0])
- // })
+  ipcMain.handle('get_configuration', () => {
+    return readConfigData()
+  })
 
   ipcMain.handle('get_proveedor', async (event, someArgument) => {
     console.log(process.resourcesPath)
     let messages = await PythonShell.run(
       app.isPackaged ? path.join(process.resourcesPath, 'extraResources/python_scripts','get_proveedor.py') : 'src/python_scripts/get_proveedor.py',
-      options
+      {
+        mode: 'text',
+        args: [readConfigData().db_name]
+      }
     )
     return JSON.parse(messages[0])
   })
@@ -84,7 +78,10 @@ app.whenReady().then(() => {
     console.log(process.resourcesPath)
     let messages = await PythonShell.run(
       app.isPackaged ? path.join(process.resourcesPath, 'extraResources/python_scripts','get_zona.py') : 'src/python_scripts/get_zona.py',
-      options
+      {
+        mode: 'text',
+        args: [readConfigData().db_name]
+      }
     )
     return JSON.parse(messages[0])
   })
@@ -94,7 +91,7 @@ app.whenReady().then(() => {
       app.isPackaged ? path.join(process.resourcesPath, 'extraResources/python_scripts','get_reporte_materia_prima.py') : 'src/python_scripts/get_reporte_materia_prima.py',
       {
       mode: 'text',
-      args: [DBISAM_DATASOURCE, args.fechaInicio, args.fechaFin, args.zonaQuery, args.proveedorStatusQuery, args.proveedorQuery, args.materiaPrimaQuery]
+      args: [readConfigData().db_name, args.fechaInicio, args.fechaFin, args.zonaQuery, args.proveedorStatusQuery, args.proveedorQuery, args.materiaPrimaQuery]
     })
 
     return JSON.parse(messages[0])
