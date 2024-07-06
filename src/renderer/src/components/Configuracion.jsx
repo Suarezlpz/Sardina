@@ -4,9 +4,22 @@ import StorageIcon from '@mui/icons-material/Storage';
 import TextField from '@mui/material/TextField';
 import Stack from "@mui/material/Stack";
 import { Button } from '@mui/material';
+import Fab from '@mui/material/Fab';
+import SaveIcon from '@mui/icons-material/Save';
+import Snackbar from '@mui/material/Snackbar';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+
 export default function Configuracion() {
 
+  const { enqueueSnackbar } = useSnackbar();
   const [config, setConfig] = useState(null)
+  const [snackbar, setSnackbar] = useState(false)
+
+  const fabStyle = {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+  };
 
   useEffect(() => {
       window.api.getConfiguration().then((result) => {
@@ -17,22 +30,10 @@ export default function Configuracion() {
   if (config === null) {
     return <></>
   }
+
     return(
-      <>
-        <Box width={'100%'}>
-          <Button
-            variant="contained"
-            onClick={() =>{
-                window.api.setConfiguration(config).then(() => {
-                  window.api.getConfiguration().then((result) => {
-                    setConfig(result);
-                  })
-                })
-            }}
-          >
-            Guardar
-          </Button>
-          <Box maxHeight={'100px'}>
+        <Box>
+          <Box width={'100%'}>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 5 }}>
               <StorageIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
               <TextField id="bd-name" label="Nombre Base de Datos" variant="standard" value={config.db_name}
@@ -41,7 +42,7 @@ export default function Configuracion() {
                  }} />
             </Box>
 
-            <Box>
+            <Box width={'65vw'}>
               {config.materias_primas.map((materia_prima, index) => {
                 return <>
                   <Box>
@@ -67,7 +68,23 @@ export default function Configuracion() {
             </Box>
 
           </Box>
+
+          <Snackbar
+            sx={{ml: 35}}
+            open={snackbar}
+            message="Configuracion guardada"
+            autoHideDuration={1500}
+          />
+          <Fab color="primary" sx={fabStyle} aria-label="add" onClick={() =>{
+                window.api.setConfiguration(config).then(() => {
+                  window.api.getConfiguration().then((result) => {
+                    setConfig(result);
+                    enqueueSnackbar('Configuracio guardada', {variant : 'success'});
+                  })
+                })
+            }}>
+            <SaveIcon />
+          </Fab>
         </Box>
-      </>
     );
 }
