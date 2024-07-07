@@ -32,31 +32,9 @@ export default function FiltroModal() {
   const [proveedorCedula, setProveedorCedula] = useAtom(ProveedoresAtom);
 
   const theme = useTheme();
-  const handleChangeProveedor = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setProveedorCedula(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
 
-  const handleChangeMateriaPrima = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setMateriaPrima(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
 
   const DrawerTitle = useAtomValue(DrawerTitleAtom)
-
-  const handleChangeChofer = (event) => {
-    setChofer(event.target.value);
-  };
 
   useEffect(() => {
 
@@ -111,68 +89,63 @@ export default function FiltroModal() {
         </FormControl>
 
         <FormControl sx={{ m: 1, width: 300}}>
-          <InputLabel id="demo-multiple-chip-label">Proveedor</InputLabel>
-          <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
+          <Autocomplete
             multiple
-            value={proveedorCedula}
-            onChange={handleChangeProveedor}
-            input={<OutlinedInput label="Tag" />}
-            renderValue={(selected) => selected.join(', ')}
-            MenuProps={MenuProps}
-          >
-            {proveedores.map((proveedor) => (
-              <MenuItem
-              key={proveedor.ci}
-              value={proveedor.ci}
-              >
-                <Checkbox checked={proveedorCedula.indexOf(proveedor.ci) > -1} />
-                <ListItemText primary={proveedor.ci + '- ' + proveedor.name} />
-              </MenuItem>
-            ))}
-          </Select>
+            limitTags={1}
+            id="checkboxes-tags-demo"
+            options={proveedores}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.ci}
+            onChange={(event, newValue) => {
+              setNombreZona([ ...newValue ].map(x => x.ci));
+            }}
+            renderTags={(tagValue, getTagProps) =>
+              tagValue.map((option, index) => {
+                const { key, ...tagProps } = getTagProps({ index });
+                return (
+                  <Chip
+                    variant="outlined"
+                    key={key}
+                    label={option.ci + ' - ' + option.name}
+                    {...tagProps}
+                  />
+                );
+              })
+            }
+            renderInput={(params) => (
+              <TextField {...params} label="Proveedores" />
+            )}
+          />
         </FormControl>
         <FormControl sx={{ m: 1, width: 300}}>
-          <InputLabel id="demo-multiple-chip-label">Materia Prima</InputLabel>
-          <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
-            multiple
-            value={materiaPrima}
-            onChange={handleChangeMateriaPrima}
-            input={<OutlinedInput label="Tag" />}
-            renderValue={(selected) => selected.join(', ')}
-            MenuProps={MenuProps}
-          >
-            {materiasPrima.map((item) => (
-              <MenuItem
-              key={item.codigo}
-              value={item.codigo}
-              >
-                <Checkbox checked={materiaPrima.indexOf(item.codigo) > -1} />
-                <ListItemText primary={item.codigo + '- ' + item.materia_prima} />
-              </MenuItem>
-            ))}
-          </Select>
+          <Autocomplete
+              multiple
+              limitTags={1}
+              id="checkboxes-tags-demo"
+              options={materiasPrima}
+              disableCloseOnSelect
+              getOptionLabel={(option) => option.codigo}
+              onChange={(event, newValue) => {
+                setNombreZona([ ...newValue ].map(x => x.codigo));
+              }}
+              renderTags={(tagValue, getTagProps) =>
+                tagValue.map((option, index) => {
+                  const { key, ...tagProps } = getTagProps({ index });
+                  return (
+                    <Chip
+                      variant="outlined"
+                      key={key}
+                      label={option.codigo}
+                      {...tagProps}
+                    />
+                  );
+                })
+              }
+              renderInput={(params) => (
+                <TextField {...params} label="Materia Prima" />
+              )}
+            />
         </FormControl>
-
-        {DrawerTitle == 1?
-          <FormControl sx={{ m: 1, width: 300}}>
-            <InputLabel id="demo-simple-select-label">Chofer</InputLabel>
-            <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={chofer}
-            label="Age"
-            onChange={handleChangeChofer}
-            >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>: ''
-        }
         <RangoFecha/>
       </Box>
   );

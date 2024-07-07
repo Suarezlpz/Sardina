@@ -124,15 +124,6 @@ export default function Reportes() {
           <Button
           sx={{height: 40}}
           variant="contained">Exportar</Button>
-          <Button
-          sx={{height: 40}}
-          variant="contained"
-          onClick={()=>{
-            setDatosProcesados('');
-            setMateriaPrimaAtom(['']);
-            setProveedoresAtom(['']);
-            setZonas(['']);
-          }}>Limpiar</Button>
         </Stack>
         <FormControl 
           sx={{display: 'flex', flexDirection: 'row', maxWidth: '500px'}}>

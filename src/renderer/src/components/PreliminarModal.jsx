@@ -1,11 +1,10 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import { useAtomValue, useAtom } from 'jotai'
 import { DatosProcesadosAtom } from '../atoms/DatosProcesadosAtom';
 import "./PreliminarModel.css"
 import { MaterialReactTable } from 'material-react-table';
-
-const columns = useMemo([
+const columns = ([
   {
     accessorKey: 'fecha',
     header: 'Fecha',
@@ -60,9 +59,13 @@ export default function PreliminarModal() {
     })
   })
 
+
+
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box sx={{ height: '500px', width: '80%' }}>
       <MaterialReactTable
+        enableDensityToggle = {false}
+        initialState={{density:'compact'}}
         columns={columns}
         data={groupsPrecessed}
         enableExpanding
