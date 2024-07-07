@@ -36,7 +36,7 @@ export default function Reportes() {
   };
 
   return(
-    <Box width={'100%'}>
+    <Box width={'85%'} sx={{mt: 10}}>
       <Box maxHeight={'100px'}>
         <FiltroModal/>
       </Box>
@@ -71,7 +71,7 @@ export default function Reportes() {
             if (proveedorStatusValue === 'no') {
               proveedorStatusQuery = "SPROVEEDOR.FP_STATUS = 0 AND"
             }
-          
+
             if (proveedores.length > 1) {
 
               let proveedoresStringifycados = []
@@ -97,8 +97,8 @@ export default function Reportes() {
             window.api.getReporteMateriaPrima({
               fechaInicio: fechaInicio.format('YYYY-MM-DD'),
               fechaFin: fechaFin.format('YYYY-MM-DD'),
-              zonaQuery: zonaQuery, 
-              proveedorStatusQuery: proveedorStatusQuery, 
+              zonaQuery: zonaQuery,
+              proveedorStatusQuery: proveedorStatusQuery,
               proveedorQuery: proveedorQuery,
               materiaPrimaQuery: materiaPrimaQuery
             }).then((result) => {
@@ -125,7 +125,7 @@ export default function Reportes() {
           sx={{height: 40}}
           variant="contained">Exportar</Button>
         </Stack>
-        <FormControl 
+        <FormControl
           sx={{display: 'flex', flexDirection: 'row', maxWidth: '500px'}}>
           <FormLabel id="demo-controlled-radio-buttons-group" sx={{marginTop: 1, marginBottom: 4, marginLeft: 5, marginRight: 5}}>Proveedor Activo</FormLabel>
           <RadioGroup

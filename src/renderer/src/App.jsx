@@ -12,7 +12,6 @@ function App() {
     <Container maxWidth="sm">
         <DrawerReporte/>
     </Container>
-
     </>
   )
 }
