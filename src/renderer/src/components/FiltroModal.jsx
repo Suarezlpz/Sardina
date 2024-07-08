@@ -25,8 +25,8 @@ export default function FiltroModal() {
   const [zonas, setZonas] = React.useState([]);
   const [nombreZona, setNombreZona] = useAtom(ZonasSeleccionadasAtom);
 
-
   const [materiaPrima, setMateriaPrima] = useAtom(MateriaPrimaAtom);
+
   const [materiaPrimaSelect, setMateriaPrimaSelect] = React.useState([]);
   const [chofer, setChofer] = React.useState('');
 
@@ -48,6 +48,7 @@ export default function FiltroModal() {
         tempProveedores.push(createDataProveedor(...proveedor))
       })
       setProveedores(tempProveedores)
+      setProveedorCedula([])
     })
 
     window.api.getZona().then((result) => {
@@ -55,10 +56,12 @@ export default function FiltroModal() {
         tempZonas.push(createDataZona(...zona))
       })
       setZonas(tempZonas)
+      setNombreZona([])
     })
 
     window.api.getConfiguration().then((result) => {
       setMateriaPrimaSelect(result.materias_primas)
+      setMateriaPrima([])
     })
 
   }, [])
@@ -101,9 +104,9 @@ export default function FiltroModal() {
             id="checkboxes-tags-demo"
             options={proveedores}
             disableCloseOnSelect
-            getOptionLabel={(option) => option.ci}
+            getOptionLabel={(option) => `${option.ci} - ${option.name}`}
             onChange={(event, newValue) => {
-              setNombreZona([ ...newValue ].map(x => x.ci));
+              setProveedorCedula([ ...newValue ].map(x => x.ci));
             }}
             renderTags={(tagValue, getTagProps) =>
               tagValue.map((option, index) => {
@@ -132,7 +135,7 @@ export default function FiltroModal() {
               disableCloseOnSelect
               getOptionLabel={(option) => `${option.codigo} - ${option.materia_prima}`}
               onChange={(event, newValue) => {
-                setNombreZona([ ...newValue ].map(x => x.codigo));
+                setMateriaPrima([ ...newValue ].map(x => x.codigo));
               }}
               renderTags={(tagValue, getTagProps) =>
                 tagValue.map((option, index) => {

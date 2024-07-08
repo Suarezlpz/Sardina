@@ -72,7 +72,7 @@ export default function Reportes() {
               proveedorStatusQuery = "SPROVEEDOR.FP_STATUS = 0 AND"
             }
 
-            if (proveedores.length > 1) {
+            if (proveedores.length > 0) {
 
               let proveedoresStringifycados = []
 
@@ -83,7 +83,7 @@ export default function Reportes() {
               proveedorQuery = `SOPERACIONINV.FTI_RESPONSABLE IN (${proveedoresStringifycados.join(",")}) AND`
             }
 
-            if (materiaPrima.length > 1) {
+            if (materiaPrima.length > 0) {
 
               let materiasPrimasStringifycados = []
 
@@ -94,6 +94,15 @@ export default function Reportes() {
               materiaPrimaQuery = `SDETALLECOMPRA.FDI_CODIGO IN (${materiasPrimasStringifycados.join(",")}) AND`
             }
 
+            console.info({
+              fechaInicio: fechaInicio.format('YYYY-MM-DD'),
+              fechaFin: fechaFin.format('YYYY-MM-DD'),
+              zonaQuery: zonaQuery,
+              proveedorStatusQuery: proveedorStatusQuery,
+              proveedorQuery: proveedorQuery,
+              materiaPrimaQuery: materiaPrimaQuery
+            });
+
             window.api.getReporteMateriaPrima({
               fechaInicio: fechaInicio.format('YYYY-MM-DD'),
               fechaFin: fechaFin.format('YYYY-MM-DD'),
@@ -102,7 +111,6 @@ export default function Reportes() {
               proveedorQuery: proveedorQuery,
               materiaPrimaQuery: materiaPrimaQuery
             }).then((result) => {
-              console.log(result)
               let resultProcesado = []
               result.forEach((row) => {
                 resultProcesado.push({
@@ -117,6 +125,7 @@ export default function Reportes() {
                   zona: row[8],
                 })
               });
+              console.log(result, resultProcesado)
               setDatosProcesados(resultProcesado)
             })
           }}
