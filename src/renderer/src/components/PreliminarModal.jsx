@@ -73,10 +73,9 @@ export default function PreliminarModal() {
       totalOperacion: v.reduce((acc, x) => acc + Number(x.totalOperacion), 0),
       precio: v.reduce((acc, x) => acc + Number(x.precio), 0),
       subRows: v
-    })
+    } )
   })
-
-
+  
 
   return (
     <Box sx={{ height: '500px', minWidth: '75vw' }}>
@@ -84,6 +83,7 @@ export default function PreliminarModal() {
         enableFilters={false}
         enableDensityToggle = {false}
         initialState={{density:'compact'}}
+        enableExpanding= {true}
         columns={columns}
         data={groupsPrecessed}
         getSubRows={(originalRow) => originalRow.subRows}
