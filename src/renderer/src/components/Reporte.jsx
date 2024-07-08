@@ -72,7 +72,7 @@ export default function Reportes() {
               proveedorStatusQuery = "SPROVEEDOR.FP_STATUS = 0 AND"
             }
           
-            if (proveedores.length > 1) {
+            if (proveedores.length > 0) {
 
               let proveedoresStringifycados = []
 
@@ -83,7 +83,7 @@ export default function Reportes() {
               proveedorQuery = `SOPERACIONINV.FTI_RESPONSABLE IN (${proveedoresStringifycados.join(",")}) AND`
             }
 
-            if (materiaPrima.length > 1) {
+            if (materiaPrima.length > 0) {
 
               let materiasPrimasStringifycados = []
 

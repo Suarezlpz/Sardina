@@ -26,7 +26,6 @@ export default function FiltroModal() {
   const [nombreZona, setNombreZona] = useAtom(ZonasSeleccionadasAtom);
 
   const [materiaPrima, setMateriaPrima] = useAtom(MateriaPrimaAtom);
-  const [chofer, setChofer] = React.useState('');
 
   const [proveedores, setProveedores] = React.useState([]);
   const [proveedorCedula, setProveedorCedula] = useAtom(ProveedoresAtom);
@@ -95,9 +94,9 @@ export default function FiltroModal() {
             id="checkboxes-tags-demo"
             options={proveedores}
             disableCloseOnSelect
-            getOptionLabel={(option) => option.ci}
+            getOptionLabel={(option) => option.ci + ' - ' + option.name}
             onChange={(event, newValue) => {
-              setNombreZona([ ...newValue ].map(x => x.ci));
+              setProveedorCedula([ ...newValue ].map(x => x.ci));
             }}
             renderTags={(tagValue, getTagProps) =>
               tagValue.map((option, index) => {
@@ -126,7 +125,7 @@ export default function FiltroModal() {
               disableCloseOnSelect
               getOptionLabel={(option) => option.codigo}
               onChange={(event, newValue) => {
-                setNombreZona([ ...newValue ].map(x => x.codigo));
+                setMateriaPrima([ ...newValue ].map(x => x.codigo));
               }}
               renderTags={(tagValue, getTagProps) =>
                 tagValue.map((option, index) => {
