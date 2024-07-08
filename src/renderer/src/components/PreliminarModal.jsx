@@ -60,7 +60,7 @@ const columns = ([
 
 export default function PreliminarModal() {
   const rows = useAtomValue(DatosProcesadosAtom)
-  var groups = Object.groupBy(rows, ({ proveedor, fecha}) => proveedor + fecha);
+  var groups = Object.groupBy(rows, ({ proveedor, fecha, id}) => proveedor + fecha + id);
   var groupsPrecessed = Object.entries(groups).map(([k, v]) => {
     return ({
       fecha: v[0].fecha,

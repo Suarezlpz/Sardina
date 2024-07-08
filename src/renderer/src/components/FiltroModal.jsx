@@ -1,16 +1,10 @@
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import { DrawerTitleAtom } from '../atoms/DrawerTitle';
 import { useAtomValue, useAtom } from 'jotai';
 import { useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Checkbox from '@mui/material/Checkbox';
-import ListItemText from '@mui/material/ListItemText';
 import { ZonasSeleccionadasAtom } from '../atoms/ZonasSeleccionadasAtom';
 import { ProveedoresAtom } from '../atoms/ProveedoresAtom';
 import { MateriaPrimaAtom } from '../atoms/MateriaPrimaAtom';
@@ -26,6 +20,7 @@ export default function FiltroModal() {
   const [nombreZona, setNombreZona] = useAtom(ZonasSeleccionadasAtom);
 
   const [materiaPrima, setMateriaPrima] = useAtom(MateriaPrimaAtom);
+  const [materiaPrimaSelect, setMateriaPrimaSelect] = useState([])
 
   const [proveedores, setProveedores] = React.useState([]);
   const [proveedorCedula, setProveedorCedula] = useAtom(ProveedoresAtom);
@@ -132,7 +127,7 @@ export default function FiltroModal() {
               disableCloseOnSelect
               getOptionLabel={(option) => `${option.codigo} - ${option.materia_prima}`}
               onChange={(event, newValue) => {
-                setMateriaPrima([ ...newValue ].map(x => x.codigo));
+                setMateriaPrimaSelect([ ...newValue ].map(x => x.codigo));
               }}
               renderTags={(tagValue, getTagProps) =>
                 tagValue.map((option, index) => {
