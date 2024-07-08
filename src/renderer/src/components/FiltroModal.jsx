@@ -45,6 +45,7 @@ export default function FiltroModal() {
         tempProveedores.push(createDataProveedor(...proveedor))
       })
       setProveedores(tempProveedores)
+      setProveedorCedula([])
     })
 
     window.api.getZona().then((result) => {
@@ -52,12 +53,18 @@ export default function FiltroModal() {
         tempZonas.push(createDataZona(...zona))
       })
       setZonas(tempZonas)
+      setNombreZona([])
+    })
+
+    window.api.getConfiguration().then((result) => {
+      setMateriaPrimaSelect(result.materias_primas)
+      setMateriaPrima([])
     })
 
   }, [])
   return (
-      <Box flexDirection={'row'} display={'flex'} minWidth={'70vw'} maxWidth={'90vw'}>
-        <FormControl sx={{ m: 1, width: 300}} >
+      <Box flexDirection={'row'} display={'flex'}>
+        <FormControl sx={{ m: 1, width: '12vw'}} >
           <Autocomplete
             multiple
             limitTags={1}
@@ -121,9 +128,9 @@ export default function FiltroModal() {
               multiple
               limitTags={1}
               id="checkboxes-tags-demo"
-              options={materiasPrima}
+              options={materiaPrimaSelect}
               disableCloseOnSelect
-              getOptionLabel={(option) => option.codigo}
+              getOptionLabel={(option) => `${option.codigo} - ${option.materia_prima}`}
               onChange={(event, newValue) => {
                 setMateriaPrima([ ...newValue ].map(x => x.codigo));
               }}
@@ -167,34 +174,3 @@ const MenuProps = {
     },
   },
 };
-
-var materiasPrima = [
-  {
-    "materia_prima": "SARDINA FRESCAR CORTADA",
-    "codigo": "MP000001"
-  },
-  {
-    "materia_prima": "SARDINA ENTERA",
-    "codigo": "MP000003"
-  },
-  {
-    "materia_prima": "PEPITONA",
-    "codigo": "MP000004"
-  },
-  {
-    "materia_prima": "SUBPRODUCTO DE SARDINA",
-    "codigo": "SP000001"
-  },
-  {
-    "materia_prima": "SUBPRODUCTO DE SARDINA ENTERA",
-    "codigo": "SP000002"
-  },
-  {
-    "materia_prima": "SUBPRODUCTO DE SARDINA PICADA",
-    "codigo": "SP000003"
-  },
-  {
-    "materia_prima": "MACHUELO",
-    "codigo": "SP000005"
-  },
-]
