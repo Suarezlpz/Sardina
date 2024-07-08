@@ -14,6 +14,7 @@ import { MateriaPrimaAtom } from '../atoms/MateriaPrimaAtom';
 import PreliminarModal from './PreliminarModal';
 import { DatosProcesadosAtom } from '../atoms/DatosProcesadosAtom';
 import { fechaInicioAtom, fechaFinAtom } from '../atoms/RangoFecha';
+import dayjs from 'dayjs';
 
 
 export default function Reportes() {
@@ -71,7 +72,7 @@ export default function Reportes() {
             if (proveedorStatusValue === 'no') {
               proveedorStatusQuery = "SPROVEEDOR.FP_STATUS = 0 AND"
             }
-          
+
             if (proveedores.length > 0) {
 
               let proveedoresStringifycados = []
@@ -114,7 +115,7 @@ export default function Reportes() {
               let resultProcesado = []
               result.forEach((row) => {
                 resultProcesado.push({
-                  fecha: row[0],
+                  fecha: dayjs(row[0]).format('YYYY-MM-DD'),
                   proveedor: row[1],
                   id: row[2],
                   total: row[3],

@@ -72,7 +72,6 @@ export default function PreliminarModal() {
             total: v2.reduce((acc, x) => acc + Number(x.total), 0),
             cantidad: v2.reduce((acc, x) => acc + Number(x.cantidad), 0),
             totalOperacion: v2.reduce((acc, x) => acc + Number(x.totalOperacion), 0),
-            precio: v2.reduce((acc, x) => acc + Number(x.precio), 0),
             subRows: v2.map((v3) => ({
                 id: v3.id,
                 producto: v3.producto,
@@ -90,7 +89,6 @@ export default function PreliminarModal() {
       total: v.reduce((acc, x) => acc + Number(x.total), 0),
       cantidad: v.reduce((acc, x) => acc + Number(x.cantidad), 0),
       totalOperacion: v.reduce((acc, x) => acc + Number(x.totalOperacion), 0),
-      precio: v.reduce((acc, x) => acc + Number(x.precio), 0),
       subRows: subRows
     } )
   })
@@ -106,6 +104,8 @@ export default function PreliminarModal() {
         columns={columns}
         data={groupsPrecessed}
         getSubRows={(originalRow) => originalRow.subRows}
+        muiTableContainerProps={ {sx: { maxHeight: 400 }} }
+        paginateExpandedRows={false}
       />
     </Box>
   );
