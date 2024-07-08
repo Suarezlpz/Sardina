@@ -62,13 +62,36 @@ export default function PreliminarModal() {
   const rows = useAtomValue(DatosProcesadosAtom)
   var groups = Object.groupBy(rows, ({ fecha }) => fecha);
   var groupsPrecessed = Object.entries(groups).map(([k, v]) => {
+
+    var groupsByProveedor = Object.groupBy(v, ({ proveedor }) => proveedor);
+
+    let subRows = Object.entries(groupsByProveedor).map(([k2, v2]) => {
+
+          return ({
+            proveedor: k2,
+            total: v2.reduce((acc, x) => acc + Number(x.total), 0),
+            cantidad: v2.reduce((acc, x) => acc + Number(x.cantidad), 0),
+            totalOperacion: v2.reduce((acc, x) => acc + Number(x.totalOperacion), 0),
+            precio: v2.reduce((acc, x) => acc + Number(x.precio), 0),
+            subRows: v2.map((v3) => ({
+                id: v3.id,
+                producto: v3.producto,
+                total: v3.total,
+                cantidad: v3.cantidad,
+                totalOperacion: v3.totalOperacion,
+                precio: v3.precio,
+                zona: v3.zona
+            }))
+          })
+    })
+
     return ({
       fecha: v[0].fecha,
       total: v.reduce((acc, x) => acc + Number(x.total), 0),
       cantidad: v.reduce((acc, x) => acc + Number(x.cantidad), 0),
       totalOperacion: v.reduce((acc, x) => acc + Number(x.totalOperacion), 0),
       precio: v.reduce((acc, x) => acc + Number(x.precio), 0),
-      subRows: v
+      subRows: subRows
     } )
   })
 
