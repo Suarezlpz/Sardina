@@ -15,6 +15,7 @@ import PreliminarModal from './PreliminarModal';
 import { DatosProcesadosAtom } from '../atoms/DatosProcesadosAtom';
 import { fechaInicioAtom, fechaFinAtom } from '../atoms/RangoFecha';
 import dayjs from 'dayjs';
+import ExportarExcelMP from './ExportarExcelMateriaPrima';
 
 
 export default function Reportes() {
@@ -126,14 +127,11 @@ export default function Reportes() {
                   zona: row[8],
                 })
               });
-              console.log(result, resultProcesado)
               setDatosProcesados(resultProcesado)
             })
           }}
           >Filtrar</Button>
-          <Button
-          sx={{height: 40}}
-          variant="contained">Exportar</Button>
+          <ExportarExcelMP data={datosProcesado}/>
         </Stack>
         <FormControl
           sx={{display: 'flex', flexDirection: 'row', maxWidth: '500px'}}>

@@ -5,6 +5,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 const api = {
   getProveedor: () => ipcRenderer.invoke('get_proveedor'),
+  getCuentasPorPagarCuerpo: (args) => ipcRenderer.invoke('get_cuentas_por_pagar_cuerpo', args),
   getZona: () => ipcRenderer.invoke('get_zona'),
   getReporteMateriaPrima: (args) => ipcRenderer.invoke('get_reporte_materia_prima', args),
   getConfiguration: () => ipcRenderer.invoke('get_configuration'),

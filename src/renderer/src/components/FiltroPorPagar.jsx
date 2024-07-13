@@ -4,31 +4,21 @@ import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import { DrawerTitleAtom } from '../atoms/DrawerTitle';
 import { useAtomValue, useAtom } from 'jotai';
-import { useTheme } from '@mui/material/styles';
 import { ZonasSeleccionadasAtom } from '../atoms/ZonasSeleccionadasAtom';
 import { ProveedoresAtom } from '../atoms/ProveedoresAtom';
-import { MateriaPrimaAtom } from '../atoms/MateriaPrimaAtom';
 import RangoFecha from './RangoFecha';
 
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 
-export default function FiltroModal() {
+export default function FiltroPorPagar() {
 
   const [zonas, setZonas] = React.useState([]);
   const [nombreZona, setNombreZona] = useAtom(ZonasSeleccionadasAtom);
 
-  const [materiaPrima, setMateriaPrima] = useAtom(MateriaPrimaAtom);
-  const [materiaPrimaSelect, setMateriaPrimaSelect] = useState([])
-
   const [proveedores, setProveedores] = React.useState([]);
   const [proveedorCedula, setProveedorCedula] = useAtom(ProveedoresAtom);
-
-  const theme = useTheme();
-
-
-  const DrawerTitle = useAtomValue(DrawerTitleAtom)
 
   useEffect(() => {
 
@@ -51,10 +41,6 @@ export default function FiltroModal() {
       setNombreZona([])
     })
 
-    window.api.getConfiguration().then((result) => {
-      setMateriaPrimaSelect(result.materias_primas)
-      setMateriaPrima([])
-    })
 
   }, [])
   return (
@@ -118,35 +104,6 @@ export default function FiltroModal() {
             )}
           />
         </FormControl>
-        <FormControl sx={{ m: 1, width: '300px'}}>
-          <Autocomplete
-              multiple
-              limitTags={1}
-              id="checkboxes-tags-demo"
-              options={materiaPrimaSelect}
-              disableCloseOnSelect
-              getOptionLabel={(option) => `${option.codigo} - ${option.materia_prima}`}
-              onChange={(event, newValue) => {
-                setMateriaPrima([ ...newValue ].map(x => x.codigo));
-              }}
-              renderTags={(tagValue, getTagProps) =>
-                tagValue.map((option, index) => {
-                  const { key, ...tagProps } = getTagProps({ index });
-                  return (
-                    <Chip
-                      variant="outlined"
-                      key={key}
-                      label={option.codigo}
-                      {...tagProps}
-                    />
-                  );
-                })
-              }
-              renderInput={(params) => (
-                <TextField {...params} label="Materia Prima" />
-              )}
-            />
-        </FormControl>
         <RangoFecha/>
       </Box>
   );
@@ -158,14 +115,3 @@ function createDataProveedor(ci, name) {
 function createDataZona(name) {
   return { name }
 }
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};

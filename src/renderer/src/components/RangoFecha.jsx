@@ -15,15 +15,14 @@ export default function RangoFecha() {
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box
-          display={'grid'}
-          gridTemplateColumns={'repeat(auto-fit, minmax(14px, 1fr))'}
+          display={'flex'}
           justifyContent="space-between"
           mb={2}
         >
           <DatePicker
             sx={{
               m: 1, 
-              minWidth: '145px'
+              minWidth: '150px'
             }}
             label="Desde"
             value={inicioFecha}
@@ -33,8 +32,7 @@ export default function RangoFecha() {
           />
           <DatePicker
             sx={{m: 1,
-              marginLeft: 4,
-              minWidth: '145px'
+              minWidth: '150px'
             }}
             label="Hasta"
             value={finalFecha}

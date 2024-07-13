@@ -78,6 +78,18 @@ app.whenReady().then(() => {
     return JSON.parse(messages[0])
   })
 
+  ipcMain.handle('get_cuentas_por_pagar_cuerpo', async (event, args) => {
+    console.log(process.resourcesPath)
+    let messages = await PythonShell.run(
+      app.isPackaged ? path.join(process.resourcesPath, 'extraResources/python_scripts','get_cuentas_por_pagar_cuerpo.py') : 'src/python_scripts/get_cuentas_por_pagar_cuerpo.py',
+      {
+        mode: 'text',
+        args: [readConfigData().db_name, args.fechaInicio, args.fechaFin, args.zonaQuery, args.proveedorQuery]
+      }
+    )
+    return JSON.parse(messages[0])
+  })
+
   ipcMain.handle('get_zona', async (event, someArgument) => {
     console.log(process.resourcesPath)
     let messages = await PythonShell.run(

@@ -17,6 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Reportes from './Reporte';
+import CuentasPorPagar from './ReporteCuentasPorPagar';
 import Configuracion from './Configuracion';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import WidgetsIcon from '@mui/icons-material/Widgets';
@@ -97,6 +98,7 @@ export default function DrawerReporte() {
   let menuItems = [
     {"text": 'Reporte Materia Prima', icon: () => <WidgetsIcon />, getChildren: () => <Reportes/>},
     {"text": 'Reporte Flete', icon: () => <LocalShippingIcon />, getChildren: () => <Reportes/>},
+    {"text": 'Reporte Cuentas Por Pagar', icon: () => <LocalShippingIcon />, getChildren: () => <CuentasPorPagar/>},
     {"text": 'Configuracion', icon: () => <SettingsIcon />, getChildren: () => <Configuracion/>},
   ];
 
