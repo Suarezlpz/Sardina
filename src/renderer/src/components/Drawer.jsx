@@ -23,7 +23,10 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { DrawerTitleAtom } from '../atoms/DrawerTitle';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
+import { HotkeyActivoAtom } from '../atoms/HotkeyActivoAtom';
+import { LoginAtom } from '../atoms/HotkeyActivoAtom';
+import LoginPage from './Login';
 
 const drawerWidth = 240;
 
@@ -86,6 +89,8 @@ export default function DrawerReporte() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [indexDrawer, setIndexDrawer] = useAtom(DrawerTitleAtom)
+  const hotkeyAtivo = useAtomValue(HotkeyActivoAtom)
+  const loginAtom = useAtomValue(LoginAtom)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -99,7 +104,6 @@ export default function DrawerReporte() {
     {"text": 'Reporte Materia Prima', icon: () => <WidgetsIcon />, getChildren: () => <Reportes/>},
     {"text": 'Reporte Flete', icon: () => <LocalShippingIcon />, getChildren: () => <Reportes/>},
     {"text": 'Reporte Cuentas Por Pagar', icon: () => <LocalShippingIcon />, getChildren: () => <CuentasPorPagar/>},
-    {"text": 'Configuracion', icon: () => <SettingsIcon />, getChildren: () => <Configuracion/>},
   ];
 
   return (
@@ -122,8 +126,25 @@ export default function DrawerReporte() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            {menuItems[indexDrawer].text}
+            { indexDrawer === 3? 'Configuracion': menuItems[indexDrawer].text}
           </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={()=> {
+              setIndexDrawer(3);
+            }}
+            sx={[
+              {
+                position: 'absolute',
+                ml: 2,
+                right: 10
+              },
+              !hotkeyAtivo && { display: 'none' }
+            ]}
+          >
+            <SettingsIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -147,7 +168,7 @@ export default function DrawerReporte() {
         <Divider />
         <List>
         {
-            menuItems.map((menu, index) => (
+          menuItems.map((menu, index) => (
             <ListItem key={menu.text} disablePadding>
               <ListItemButton
                 onClick={() => setIndexDrawer(index)}>
@@ -162,9 +183,9 @@ export default function DrawerReporte() {
         </List>
       </Drawer>
       <Main open={open} >
-        {
-            menuItems[indexDrawer].getChildren()
-        }
+        
+        {indexDrawer === 3? (loginAtom == true? <Configuracion/>: <LoginPage/>): menuItems[indexDrawer].getChildren()}
+
       </Main>
     </Box>
   );

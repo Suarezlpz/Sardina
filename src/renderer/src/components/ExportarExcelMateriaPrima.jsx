@@ -9,7 +9,7 @@ export default function ExportarExcelMP({data}) {
     const titulo = [{A: 'Reporte Materia Prima'},{}]
 
 
-    const longitudes = [15, 35, 15, 15, 15, 15, 15, 15, 15]
+    const longitudes = [15, 35, 15, 15, 20, 15, 15, 15, 15]
 
     const handleDownload = () =>{
         setLoading(true);
@@ -22,26 +22,48 @@ export default function ExportarExcelMP({data}) {
             E: 'Producto',
             F: 'Cantidad',
             G: 'Precio',
-            H: 'Total Operacion',
-            I: 'Zona',
+            H: 'Total Operacion'
         }]
 
         data.forEach((data) => {
             tabla.push({
                 A: data.fecha,
-                B: data.proveedor,
-                C: data.id,
+                B: '',
+                C: '',
                 D: data.total,
-                E: data.producto,
+                E: '',
                 F: data.cantidad,
-                G: data.precio,
+                G: '',
                 H: data.totalOperacion,
-                I: data.zona
             })
+            data.subRows.map((subRowFecha) => {
+                tabla.push({
+                    A: '',
+                    B: subRowFecha.proveedor,
+                    C: '',
+                    D: subRowFecha.total,
+                    E: '',
+                    F: subRowFecha.cantidad,
+                    G: '',
+                    H: subRowFecha.totalOperacion,
+                })
+                subRowFecha.subRows.map((subRowProveedor) => {
+                    tabla.push({
+                        A: '',
+                        B: '',
+                        C: subRowProveedor.id,
+                        D: subRowProveedor.total,
+                        E: subRowProveedor.producto,
+                        F: subRowProveedor.cantidad,
+                        G: subRowProveedor.precio,
+                        H: subRowProveedor.totalOperacion,
+                    })
+                });
+            });
         });      
         
         const dataFinal = [...titulo, ...tabla]
-
+        console.log('datwa', tabla)
         setTimeout(() => {
             creandoArchivo(dataFinal)
             setLoading(false);
@@ -66,6 +88,7 @@ export default function ExportarExcelMP({data}) {
         });
 
         hoja['!cols'] = propiedades;
+
 
         XLSX.utils.book_append_sheet(libro, hoja, 'data');
         XLSX.writeFile(libro, 'dataDesdeElBoton.xlsx')

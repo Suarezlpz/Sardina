@@ -27,7 +27,6 @@ export default function FiltroModal() {
 
   const theme = useTheme();
 
-
   const DrawerTitle = useAtomValue(DrawerTitleAtom)
 
   useEffect(() => {
@@ -125,7 +124,7 @@ export default function FiltroModal() {
               id="checkboxes-tags-demo"
               options={materiaPrimaSelect}
               disableCloseOnSelect
-              getOptionLabel={(option) => `${option.codigo} - ${option.materia_prima}`}
+              getOptionLabel={(option) => option.materia_prima}
               onChange={(event, newValue) => {
                 setMateriaPrima([ ...newValue ].map(x => x.codigo));
               }}
@@ -136,7 +135,7 @@ export default function FiltroModal() {
                     <Chip
                       variant="outlined"
                       key={key}
-                      label={option.codigo}
+                      label={option.materia_prima}
                       {...tagProps}
                     />
                   );

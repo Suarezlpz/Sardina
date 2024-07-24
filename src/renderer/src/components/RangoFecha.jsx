@@ -24,6 +24,7 @@ export default function RangoFecha() {
               m: 1, 
               minWidth: '150px'
             }}
+            format="DD/MM/YYYY"
             label="Desde"
             value={inicioFecha}
             onChange={(newValue) =>{
@@ -35,6 +36,7 @@ export default function RangoFecha() {
               minWidth: '150px'
             }}
             label="Hasta"
+            format="DD/MM/YYYY"
             value={finalFecha}
             onChange={(newValue) => {
             setFinalFecha(newValue)

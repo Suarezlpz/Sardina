@@ -9,8 +9,9 @@ import dayjs from 'dayjs';
 import TablaPorPagar from './TablaCuentasPorPagar';
 import FiltroPorPagar from './FiltroPorPagar';
 import { ProveedoresAtom } from '../atoms/ProveedoresAtom';
-import { PorPagarAtom } from '../atoms/PorPagarAtom';
+import { PorPagarAtom, PorPagarJsonAtom } from '../atoms/PorPagarAtom';
 import ExportarExcel from './ExportarExcelPorPagar';
+import HotKey from './HotKey';
 
 
 export default function CuentasPorPagar() {
@@ -19,7 +20,8 @@ export default function CuentasPorPagar() {
   const fechaInicio = useAtomValue(fechaInicioAtom);
   const zonasSeleccionadas = useAtomValue(ZonasSeleccionadasAtom);
   const proveedores = useAtomValue(ProveedoresAtom);
-  const [porPagar, setPorPagar] = useAtom(PorPagarAtom)
+  const [porPagar, setPorPagar] = useAtom(PorPagarAtom);
+  const porPagarJson = useAtomValue(PorPagarJsonAtom);
 
   function handleClick() {
 
@@ -64,13 +66,13 @@ export default function CuentasPorPagar() {
       let resultProcesado = []
       result.forEach((row) => {
           resultProcesado.push({
-            fecha: dayjs(row[0]).format('YYYY-MM-DD'),
+            fecha: dayjs(row[0]).format('DD-MM-YYYY'),
             ci: row[1],
             proveedor: row[2],
             id: row[3],
             montoOriginal: row[4],
             abono: row[5],
-            zona: row[6],
+            zona: row[6].toUpperCase(),
             tipoTransaccion: row[7],
             ftiStatus: row[8],
             statusCliente: row[9],
@@ -96,10 +98,11 @@ export default function CuentasPorPagar() {
             handleClick();
           }}
           >Filtrar</Button>
-          <ExportarExcel  data={porPagar}/>
+          <ExportarExcel  data={porPagarJson}/>
         </Stack>
       </Box>
       <TablaPorPagar/>
+      <HotKey/>
     </Box>
   );
 }

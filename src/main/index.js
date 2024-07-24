@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, shell, globalShortcut } from 'electron'
 import { join } from 'path'
 const path = require('path')
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
@@ -111,6 +111,10 @@ app.whenReady().then(() => {
     })
 
     return JSON.parse(messages[0])
+  })
+
+  globalShortcut.register('Alt+CommandOrControl+I', () => {
+    console.log('Electron loves global shortcuts!')
   })
   createWindow()
 
