@@ -7,6 +7,10 @@ import { MaterialReactTable } from 'material-react-table';
 import _ from 'lodash';
 const columns = ([
   {
+    accessorKey: 'zona',
+    header: 'ZONA',
+  },
+  {
     accessorKey: 'fecha',
     header: 'FECHA',
     grow: false, //don't allow this column to grow to fill in remaining space - new in v2.8
@@ -61,34 +65,40 @@ export default function PreliminarModal() {
 
   useEffect(() => {
     const rows = datosProcesadosAtom;
-    const groups = _.groupBy(rows, 'fecha');
+    const groups = _.groupBy(rows, 'zona');
     const processedGroups = Object.entries(groups).map(([k, v]) => {
-      const groupsByProveedor = _.groupBy(v, 'proveedor');
+      const groupsByProveedor = _.groupBy(v, 'fecha');
       const subRows = Object.entries(groupsByProveedor).map(([k2, v2]) => {
-  
+        const groupsByProveedor = _.groupBy(v, 'proveedor');
+        const subRows2 = Object.entries(groupsByProveedor).map(([k3, v3]) => {
+    
+          return ({
+            proveedor: k3,
+            total: v3.reduce((acc, x) => acc + Number(x.total), 0) + '$',
+            cantidad: v3.reduce((acc, x) => acc + Number(x.cantidad), 0),
+            totalOperacion: v3.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
+            subRows: v3.map((v4) => ({
+                id: v4.id,
+                producto: v4.producto,
+                total: v4.total + '$',
+                cantidad: v4.cantidad,
+                totalOperacion: v4.totalOperacion + '$',
+                precio: v4.precio + '$'
+            }))
+          })
+        })
         return ({
-          proveedor: k2,
-          total: v2.reduce((acc, x) => acc + Number(x.total), 0) + '$',
-          cantidad: v2.reduce((acc, x) => acc + Number(x.cantidad), 0),
-          totalOperacion: v2.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
-          subRows: v2.map((v3) => ({
-              id: v3.id,
-              producto: v3.producto,
-              total: v3.total + '$',
-              cantidad: v3.cantidad,
-              totalOperacion: v3.totalOperacion + '$',
-              precio: v3.precio + '$',
-              zona: v3.zona
-          }))
+          fecha: v2[0].fecha,
+          total: v.reduce((acc, x) => acc + Number(x.total), 0) + '$',
+          cantidad: v.reduce((acc, x) => acc + Number(x.cantidad), 0),
+          totalOperacion: v.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
+          subRows: subRows2
         })
       })
       return ({
-        fecha: v[0].fecha,
-        total: v.reduce((acc, x) => acc + Number(x.total), 0) + '$',
-        cantidad: v.reduce((acc, x) => acc + Number(x.cantidad), 0),
-        totalOperacion: v.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
+        zona: v[0].zona,
         subRows: subRows
-      } )
+      })
     })
     if (!_.isEqual(processedGroups, groupsPrecessed)) {
       setGroupsPrecessed(processedGroups);

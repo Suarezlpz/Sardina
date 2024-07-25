@@ -58,7 +58,6 @@ export default function TablaPorPagar() {
   const porPagar = useAtomValue(PorPagarAtom);
   const [porPagarJson, setPorPagarJson] = useAtom(PorPagarJsonAtom)
   const [groupsPrecessed, setGroupsPrecessed] = useState([]);
-  
 /*
   const rows = porPagar;
   var groups = Object.groupBy(rows, ({ fecha }) => fecha);

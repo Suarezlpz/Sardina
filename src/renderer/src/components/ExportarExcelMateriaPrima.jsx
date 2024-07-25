@@ -1,62 +1,101 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
-import * as XLSX from 'xlsx'
+//import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-js-style';
 
 export default function ExportarExcelMP({data}) {
 
     const [loading, setLoading] = useState(false)
-    const titulo = [{A: 'Reporte Materia Prima'},{}]
+    const titulo = [{A: {v: 'Reporte Materia Prima' , s: {font: { name: "Arial", sz: 30, bold: true, }, fill: { fgColor: { rgb: "FF0000" } },alignment: { horizontal: "center", vertical: "center" }}}},{}]
 
 
-    const longitudes = [15, 35, 15, 15, 20, 15, 15, 15, 15]
+    const longitudes = [15, 15, 35, 20, 20, 20, 15, 15, 25]
 
     const handleDownload = () =>{
         setLoading(true);
 
         let tabla = [{
-            A: 'Fecha',
-            B: 'Proveedor',
-            C: 'Documento',
-            D: 'Total',
-            E: 'Producto',
-            F: 'Cantidad',
-            G: 'Precio',
-            H: 'Total Operacion'
+            A: {v: 'ZONA', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            B: {v: 'FECHA', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            C: {v: 'PROVEEDOR', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            D: {v: 'DOCUMENTO', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            E: {v: 'TOTAL', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            F: {v: 'PRODUCTO', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            G: {v: 'CANTIDAD', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            H: {v: 'PRECIO', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            I: {v: 'TOTAL OPERACION',  s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}
         }]
 
         data.forEach((data) => {
             tabla.push({
-                A: data.fecha,
+                A: data.zona,
                 B: '',
                 C: '',
-                D: data.total,
+                D: '',
                 E: '',
-                F: data.cantidad,
+                F: '',
                 G: '',
-                H: data.totalOperacion,
+                H: '',
+                I: '',
             })
-            data.subRows.map((subRowFecha) => {
+            data.subRows.map((subRowZona) => {
                 tabla.push({
                     A: '',
-                    B: subRowFecha.proveedor,
+                    B: subRowZona.fecha,
                     C: '',
-                    D: subRowFecha.total,
-                    E: '',
-                    F: subRowFecha.cantidad,
-                    G: '',
-                    H: subRowFecha.totalOperacion,
+                    D: '',
+                    E: subRowZona.total,
+                    F: '',
+                    G: subRowZona.cantidad,
+                    H: '',
+                    I: subRowZona.totalOperacion,
                 })
-                subRowFecha.subRows.map((subRowProveedor) => {
+                tabla.push({
+                    A: '',
+                    B: '',
+                    C: '',
+                    D: '',
+                    E: '',
+                    F: '',
+                    G: '',
+                    H: '',
+                    I: '',
+                })
+                subRowZona.subRows.map((subRowFecha) => {
                     tabla.push({
                         A: '',
                         B: '',
-                        C: subRowProveedor.id,
-                        D: subRowProveedor.total,
-                        E: subRowProveedor.producto,
-                        F: subRowProveedor.cantidad,
-                        G: subRowProveedor.precio,
-                        H: subRowProveedor.totalOperacion,
+                        C: subRowFecha.proveedor,
+                        D: {v: 'TOTAL', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+                        E: {v: subRowFecha.total, s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+                        F: '',
+                        G: subRowFecha.cantidad,
+                        H: '',
+                        I: subRowFecha.totalOperacion,
+                    })
+                    subRowFecha.subRows.map((subRowProveedor) => {
+                        tabla.push({
+                            A: '',
+                            B: '',
+                            C: '',
+                            D: subRowProveedor.id,
+                            E: subRowProveedor.total,
+                            F: subRowProveedor.producto,
+                            G: subRowProveedor.cantidad,
+                            H: subRowProveedor.precio,
+                            I: subRowProveedor.totalOperacion,
+                        })
+                    });
+                    tabla.push({
+                        A: '',
+                        B: '',
+                        C: '',
+                        D: '',
+                        E: '',
+                        F: '',
+                        G: '',
+                        I: '',
                     })
                 });
             });
@@ -88,7 +127,6 @@ export default function ExportarExcelMP({data}) {
         });
 
         hoja['!cols'] = propiedades;
-
 
         XLSX.utils.book_append_sheet(libro, hoja, 'data');
         XLSX.writeFile(libro, 'dataDesdeElBoton.xlsx')

@@ -3,12 +3,11 @@ import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 //import * as XLSX from 'xlsx';
 import * as XLSX from 'xlsx-js-style';
-import _ from 'lodash';
 
 export default function ExportarExcel({data}) {
 
     const [loading, setLoading] = useState(false)
-    const titulo = [{A: 'Reporte Cuentas Por Pagar'},{}]
+    const titulo = [{A: {v: 'Reporte Cuentas Por Pagar', s: {font: { name: "Arial", sz: 30, bold: true, }, fill: { fgColor: { rgb: "FF0000" } },alignment: { horizontal: "center", vertical: "center" }}}},{}]
 
     const longitudes = [17,17,40,17,17,17,17,17,17,17]
 
@@ -16,13 +15,13 @@ export default function ExportarExcel({data}) {
         setLoading(true);
 
         let tabla = [{
-            A: 'Zona',
-            B: 'Fecha',
-            C: 'Proveedor',
-            D: 'Documento',
-            E: 'Monto Original',
-            F: 'Monto Abono',
-            G: 'Proxima Fecha',
+            A: {v: 'Zona', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" }}}}, 
+            B: {v: 'Fecha', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" } }}},
+            C: {v: 'Proveedor', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" } }}},
+            D: {v: 'Documento', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" } }}},
+            E: {v: 'Monto Original', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" } }}},
+            F: {v: 'Monto Abono', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" } }}},
+            G: {v: 'Proxima Fecha', s: {font: { name: "Arial", sz: 12, bold: true}, fill: { fgColor: { rgb: "4FA4F9" } }}},
         }]
 
         data.map((data) => {
@@ -70,10 +69,19 @@ export default function ExportarExcel({data}) {
                         A: '',
                         B: '',
                         C: '',
-                        D: 'TOTAL',
-                        E: subRowProveedor.subRows.reduce(function(pre, curr){
+                        D: {v: 'TOTAL', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+                        E: {v: subRowProveedor.subRows.reduce(function(pre, curr){
                             return parseFloat(pre)+parseFloat(curr.montoOriginal);
-                          },0) + '$',
+                          },0) + '$',  s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+                        F: '',
+                        G: '',
+                    })
+                    tabla.push({
+                        A: '',
+                        B: '',
+                        C: '',
+                        D: '',
+                        E: '',
                         F: '',
                         G: '',
                     })
@@ -109,25 +117,6 @@ export default function ExportarExcel({data}) {
         });
 
         hoja['!cols'] = propiedades;
-
-         // Obtener el rango de celdas
-        const range = XLSX.utils.decode_range(hoja['!ref']);
-
-        // Aplicar estilos a todas las celdas
-        for (let R = range.s.r; R <= range.e.r; ++R) {
-            for (let C = range.s.c; C <= range.e.c; ++C) {
-                const cell_address = { c: C, r: R };
-                const cell_ref = XLSX.utils.encode_cell(cell_address);
-                if (!hoja[cell_ref]) hoja[cell_ref] = {}; // Crear la celda si no existe
-                hoja[cell_ref].s = {
-                    font: {
-                        name: 'Arial',
-                        sz: 12,
-                        color: { rgb: "000000" }
-                    },
-                };
-            }
-        }
 
         XLSX.utils.book_append_sheet(libro, hoja, 'data');
         XLSX.writeFile(libro, 'dataDesdeElBoton.xlsx')
