@@ -27,6 +27,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { HotkeyActivoAtom } from '../atoms/HotkeyActivoAtom';
 import { LoginAtom } from '../atoms/HotkeyActivoAtom';
 import LoginPage from './Login';
+import ReportesFlete from './ReporteFlete';
 
 const drawerWidth = 240;
 
@@ -38,6 +39,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    display: 'flex',
+    justifyContent: 'center',
     marginLeft: `-${drawerWidth}px`,
     variants: [
       {
@@ -48,6 +51,9 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             duration: theme.transitions.duration.enteringScreen,
           }),
           marginLeft: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          maxWidth: '80vw',
         },
       },
     ],
@@ -102,8 +108,9 @@ export default function DrawerReporte() {
 
   let menuItems = [
     {"text": 'Reporte Materia Prima', icon: () => <WidgetsIcon />, getChildren: () => <Reportes/>},
-    {"text": 'Reporte Flete', icon: () => <LocalShippingIcon />, getChildren: () => <Reportes/>},
+    {"text": 'Reporte Flete', icon: () => <LocalShippingIcon />, getChildren: () => <ReportesFlete/>},
     {"text": 'Reporte Cuentas Por Pagar', icon: () => <LocalShippingIcon />, getChildren: () => <CuentasPorPagar/>},
+    
   ];
 
   return (

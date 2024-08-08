@@ -25,6 +25,7 @@ export default function ExportarExcel({data}) {
         }]
 
         data.map((data) => {
+            console.log(data)
             tabla.push({
                 A: data.zona,
                 B: '',
@@ -87,7 +88,7 @@ export default function ExportarExcel({data}) {
                     })
                 })
             })
-        });      
+        });  
         
         const dataFinal = [...titulo, ...tabla]
 
@@ -119,7 +120,7 @@ export default function ExportarExcel({data}) {
         hoja['!cols'] = propiedades;
 
         XLSX.utils.book_append_sheet(libro, hoja, 'data');
-        XLSX.writeFile(libro, 'dataDesdeElBoton.xlsx')
+        XLSX.writeFile(libro, 'ReportePorPagar.xlsx')
     }
 
     return (
@@ -130,7 +131,7 @@ export default function ExportarExcel({data}) {
                 onClick={()=>{
                     handleDownload()
                 }}
-            >Exportar</Button>
+            >Excel</Button>
         </>
     );
 }

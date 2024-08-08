@@ -44,8 +44,8 @@ export default function FiltroPorPagar() {
 
   }, [])
   return (
-      <Box flexDirection={'row'} display={'flex'}>
-        <FormControl sx={{ m: 1, width: '300px'}} >
+      <Box flexDirection={'row'} display={'flex'} flexGrow={1}>
+        <FormControl sx={{ m: 1, width: '12vw'}} >
           <Autocomplete
             multiple
             limitTags={1}
@@ -75,7 +75,7 @@ export default function FiltroPorPagar() {
           />
         </FormControl>
 
-        <FormControl sx={{ m: 1, width: '300px'}}>
+        <FormControl sx={{ m: 1, width: '12vw'}}>
           <Autocomplete
             multiple
             limitTags={1}

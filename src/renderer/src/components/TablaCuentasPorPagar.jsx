@@ -91,12 +91,13 @@ export default function TablaPorPagar() {
       const rows = porPagar;
       const groups = _.groupBy(rows, 'zona');
       const processedGroups = Object.entries(groups).map(([k, v]) => {
-        const groupsByProveedor = _.groupBy(v, 'fecha');
-        const subRows = Object.entries(groupsByProveedor).map(([k2, v2]) => {
+        const groupsByFecha = _.groupBy(v, 'fecha');
+        const subRows = Object.entries(groupsByFecha).map(([k2, v2]) => {
           const groupsByProveedor = _.groupBy(v2, 'proveedor');
           const subRows2 = Object.entries(groupsByProveedor).map(([k3, v3]) => {
             return {
               proveedor: k3,
+              montoOriginal: v3.reduce((acc, x) => acc + Number(x.montoOriginal), 0) + '$',
               subRows: v3.map((v4) => ({
                 id: v4.id,
                 montoOriginal: v4.montoOriginal + '$',
@@ -107,6 +108,7 @@ export default function TablaPorPagar() {
           });
           return {
             fecha: v2[0].fecha,
+            montoOriginal: v2.reduce((acc, x) => acc + Number(x.montoOriginal), 0) + '$',
             subRows: subRows2
           };
         });
@@ -120,12 +122,11 @@ export default function TablaPorPagar() {
       if (!_.isEqual(processedGroups, groupsPrecessed)) {
         setGroupsPrecessed(processedGroups);
         setPorPagarJson(processedGroups);
-        console.log('jelou', porPagarJson)
       }
     }, [porPagar, groupsPrecessed, setPorPagarJson]);
 
   return (
-    <Box sx={{ height: '500px', minWidth: '75vw' }}>
+    <Box flexGrow={1} sx={{ height: '500px', minWidth: '50vw', maxWidth: '90vw'}}>
       <MaterialReactTable
         enableFilters={false}
         enableDensityToggle = {false}

@@ -17,6 +17,7 @@ import { fechaInicioAtom, fechaFinAtom } from '../atoms/RangoFecha';
 import dayjs from 'dayjs';
 import ExportarExcelMP from './ExportarExcelMateriaPrima';
 import HotKey from './HotKey';
+import ExportarPDFmateriaPrima from './ExportarPDFmateriaPrima';
 
 export default function Reportes() {
 
@@ -145,6 +146,7 @@ export default function Reportes() {
           }}
           >Filtrar</Button>
           <ExportarExcelMP data={datosProcesadosJson}/>
+          <ExportarPDFmateriaPrima data={datosProcesadosJson}/>
         </Stack>
         <FormControl
           sx={{display: 'flex', flexDirection: 'row', maxWidth: '500px'}}>

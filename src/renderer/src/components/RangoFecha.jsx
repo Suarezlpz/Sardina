@@ -22,7 +22,8 @@ export default function RangoFecha() {
           <DatePicker
             sx={{
               m: 1, 
-              minWidth: '150px'
+              minWidth: '150px',
+              width: '12vw',
             }}
             format="DD/MM/YYYY"
             label="Desde"
@@ -33,7 +34,8 @@ export default function RangoFecha() {
           />
           <DatePicker
             sx={{m: 1,
-              minWidth: '150px'
+              minWidth: '150px',
+              width: '12vw',
             }}
             label="Hasta"
             format="DD/MM/YYYY"

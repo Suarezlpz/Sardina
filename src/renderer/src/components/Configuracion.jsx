@@ -32,7 +32,7 @@ export default function Configuracion() {
   }
 
     return(
-        <Box>
+        <Box flexGrow={1}>
           <Box width={'100%'}>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 5 }}>
               <StorageIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
@@ -41,6 +41,14 @@ export default function Configuracion() {
                    setConfig(prev => ({...prev, db_name: e.target.value}))
                  }} />
             </Box>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 5 }}>
+              <StorageIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+              <TextField id="bd-name-aux" label="Nombre Base de Datos aux" variant="standard" value={config.db_name2}
+                 onChange={(e) => {
+                   setConfig(prev => ({...prev, db_name2: e.target.value}))
+                 }} />
+            </Box>
+            
 
             <Box width={'65vw'}>
               {config.materias_primas.map((materia_prima, index) => {

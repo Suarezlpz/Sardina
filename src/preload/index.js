@@ -9,7 +9,11 @@ const api = {
   getZona: () => ipcRenderer.invoke('get_zona'),
   getReporteMateriaPrima: (args) => ipcRenderer.invoke('get_reporte_materia_prima', args),
   getConfiguration: () => ipcRenderer.invoke('get_configuration'),
-  setConfiguration: (args) => ipcRenderer.invoke('set_configuration', args)
+  setConfiguration: (args) => ipcRenderer.invoke('set_configuration', args),
+  getFlete: (args) => ipcRenderer.invoke('get_flete', args),
+  getProveedorFlete: () => ipcRenderer.invoke('get_proveedor_flete'),
+  getPlacasReporteFlete: (args) => ipcRenderer.invoke('get_placas_reporte_flete', args),
+  
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

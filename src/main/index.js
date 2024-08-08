@@ -78,6 +78,30 @@ app.whenReady().then(() => {
     return JSON.parse(messages[0])
   })
 
+  ipcMain.handle('get_placas_reporte_flete', async (event, args) => {
+    console.log(process.resourcesPath)
+    let messages = await PythonShell.run(
+      app.isPackaged ? path.join(process.resourcesPath, 'extraResources/python_scripts','get_placas_reporte_flete.py') : 'src/python_scripts/get_placas_reporte_flete.py',
+      {
+        mode: 'text',
+        args: [readConfigData().db_name2, args.placaQuery]
+      }
+    )
+    return JSON.parse(messages[0])
+  })
+
+  ipcMain.handle('get_proveedor_flete', async (event, someArgument) => {
+    console.log(process.resourcesPath)
+    let messages = await PythonShell.run(
+      app.isPackaged ? path.join(process.resourcesPath, 'extraResources/python_scripts','get_proveedor_flete.py') : 'src/python_scripts/get_proveedor_flete.py',
+      {
+        mode: 'text',
+        args: [readConfigData().db_name]
+      }
+    )
+    return JSON.parse(messages[0])
+  })
+
   ipcMain.handle('get_cuentas_por_pagar_cuerpo', async (event, args) => {
     console.log(process.resourcesPath)
     let messages = await PythonShell.run(
@@ -110,6 +134,18 @@ app.whenReady().then(() => {
       args: [readConfigData().db_name, args.fechaInicio, args.fechaFin, args.zonaQuery, args.proveedorStatusQuery, args.proveedorQuery, args.materiaPrimaQuery]
     })
 
+    return JSON.parse(messages[0])
+  })
+
+  ipcMain.handle('get_flete', async (event, args) => {
+    console.log(process.resourcesPath)
+    let messages = await PythonShell.run(
+      app.isPackaged ? path.join(process.resourcesPath, 'extraResources/python_scripts','get_flete.py') : 'src/python_scripts/get_flete.py',
+      {
+        mode: 'text',
+        args: [readConfigData().db_name, args.fechaInicio, args.fechaFin, args.proveedorQuery, args.proveedorStatusQuery]
+      }
+    )
     return JSON.parse(messages[0])
   })
 

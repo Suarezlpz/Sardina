@@ -67,13 +67,13 @@ export default function PreliminarModal() {
     const rows = datosProcesadosAtom;
     const groups = _.groupBy(rows, 'zona');
     const processedGroups = Object.entries(groups).map(([k, v]) => {
-      const groupsByProveedor = _.groupBy(v, 'fecha');
-      const subRows = Object.entries(groupsByProveedor).map(([k2, v2]) => {
-        const groupsByProveedor = _.groupBy(v, 'proveedor');
+      const groupsByFecha = _.groupBy(v, 'fecha');
+      const subRows = Object.entries(groupsByFecha).map(([k2, v2]) => {
+        const groupsByProveedor = _.groupBy(v2, 'proveedor');
         const subRows2 = Object.entries(groupsByProveedor).map(([k3, v3]) => {
     
           return ({
-            proveedor: k3,
+            proveedor: v3[0].proveedor,
             total: v3.reduce((acc, x) => acc + Number(x.total), 0) + '$',
             cantidad: v3.reduce((acc, x) => acc + Number(x.cantidad), 0),
             totalOperacion: v3.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
@@ -89,9 +89,9 @@ export default function PreliminarModal() {
         })
         return ({
           fecha: v2[0].fecha,
-          total: v.reduce((acc, x) => acc + Number(x.total), 0) + '$',
-          cantidad: v.reduce((acc, x) => acc + Number(x.cantidad), 0),
-          totalOperacion: v.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
+          total: v2.reduce((acc, x) => acc + Number(x.total), 0) + '$',
+          cantidad: v2.reduce((acc, x) => acc + Number(x.cantidad), 0),
+          totalOperacion: v2.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
           subRows: subRows2
         })
       })
@@ -103,13 +103,12 @@ export default function PreliminarModal() {
     if (!_.isEqual(processedGroups, groupsPrecessed)) {
       setGroupsPrecessed(processedGroups);
       setDatosProcesados(processedGroups);
-      console.log('wqe', datosProcesados);
     }
 
   }, [datosProcesadosAtom, groupsPrecessed, setDatosProcesados]);
     
   return (
-    <Box sx={{ height: '500px', minWidth: '75vw' }}>
+    <Box flexGrow={1} sx={{ height: '500px', minWidth: '50vw', maxWidth: '90vw'}}>
       <MaterialReactTable
         enableFilters={false}
         enableDensityToggle = {false}

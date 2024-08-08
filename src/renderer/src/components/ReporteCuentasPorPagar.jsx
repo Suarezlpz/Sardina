@@ -11,6 +11,7 @@ import FiltroPorPagar from './FiltroPorPagar';
 import { ProveedoresAtom } from '../atoms/ProveedoresAtom';
 import { PorPagarAtom, PorPagarJsonAtom } from '../atoms/PorPagarAtom';
 import ExportarExcel from './ExportarExcelPorPagar';
+import ExportarPDFporPagar from './ExportarPDFporPagar';
 import HotKey from './HotKey';
 
 
@@ -98,6 +99,7 @@ export default function CuentasPorPagar() {
           }}
           >Filtrar</Button>
           <ExportarExcel  data={porPagarJson}/>
+          <ExportarPDFporPagar data={porPagarJson}/>
         </Stack>
       </Box>
       <TablaPorPagar/>
