@@ -12,6 +12,7 @@ export default function ExportarExcelFlete({data}) {
     const longitudes = [17,40,25,17,17,30,25,17,17]
 
     const handleDownload = () =>{
+     
         setLoading(true);
 
         let tabla = [{
@@ -28,7 +29,6 @@ export default function ExportarExcelFlete({data}) {
 
 
         data.map((data) => {
-            console.log(data)
             tabla.push({
                 A: data.fecha,
                 B: '',
@@ -49,6 +49,8 @@ export default function ExportarExcelFlete({data}) {
                     E: '',
                     F: '',
                     G: '',
+                    H: '',
+                    I: '',
                 })
                 subRowFecha.subRows.map((subRowFletero) => {
                     tabla.push({
@@ -63,35 +65,53 @@ export default function ExportarExcelFlete({data}) {
                         I: subRowFletero.totalOperacion,
                     })
                 })
-                /*tabla.push({
-                    A: '',
-                    B: '',
-                    C: '',
-                    D: {v: 'TOTAL', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
-                    E: {v: subRowProveedor.subRows.reduce(function(pre, curr){
-                        return parseFloat(pre)+parseFloat(curr.montoOriginal);
-                        },0) + '$',  s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
-                    F: '',
-                    G: '',
-                    H: '',
-                    I: '',
-                })*/
                 tabla.push({
                     A: '',
                     B: '',
                     C: '',
                     D: '',
                     E: '',
+                    F: '',
+                    G: '',
+                    H: {v: 'TOTAL', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+                    I: {v: subRowFecha.subRows.reduce(function(pre, curr){
+                        return parseFloat(pre)+parseFloat(curr.totalOperacion);
+                        },0) + '$',  s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+                })
+                tabla.push({
+                    A: '',
+                    B: '',
+                    C: '',
+                    D: '',
+                    E: '',
+                    F: '',
                     G: '',
                     H: '',
                     I: '',
                 })
             })
-        })     
+        })
+        let totalOperacion = 0
+        data.forEach(element => {
+            element.subRows.forEach(subRowFecha => {
+                totalOperacion = parseFloat(totalOperacion) + parseFloat(subRowFecha.totalOperacion)
+            });
+        });
+        tabla.push({
+            A: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            B: {v: 'TOTAL DEL DOCUMENTO', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            C: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            D: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            E: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            F: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            G: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            H: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            I: {v: totalOperacion + '$', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+        })
+     
+
         
         const dataFinal = [...titulo, ...tabla]
-
-        console.log('data', tabla)
 
         setTimeout(() => {
             creandoArchivo(dataFinal)

@@ -70,8 +70,22 @@ export default function ExportarPDFporPagar({data}) {
                 })
             })
         })
+        let montoOriginal = 0
+        data.forEach(element => {
+            element.subRows.forEach(subRowFecha => {
+                montoOriginal = parseFloat(montoOriginal) + parseFloat(subRowFecha.montoOriginal)
+            });
+        });
+        tabla.push([
+            '',
+            '',
+            'TOTAL DEL DOCUMENTO',
+            '',
+            montoOriginal + '$',
+            '',
+            '',
+        ])
 
-        console.log(tabla, 'tabla')
         doc.autoTable({
             startY: 30,
             head: [colums],
@@ -79,16 +93,22 @@ export default function ExportarPDFporPagar({data}) {
             theme: 'grid',
             styles: {
                 lineWidth: 0.2, // Ancho del borde
-                lineColor: [0, 0, 0] // Color del borde (negro)
+                lineColor: [0, 0, 0], // Color del borde (negro)
+                textColor: [0, 0, 0],
             },
             headStyles: {
-                fillColor: [40, 127, 186] // Color azul para el encabezado
+                fillColor: [40, 127, 186], // Color azul para el encabezado
+                textColor: [254, 254, 250],
             },
             didParseCell: function (data) {
                 if (data.cell.raw === 'TOTAL') { 
                   data.cell.styles.fontStyle = 'bold'; // Cambia el estilo de la fuente
-                  data.cell.styles.textColor = [254, 254, 250]; // Cambia el color del texto a rojo
+                  data.cell.styles.textColor = [254, 254, 250]; // Cambia el color del texto
                   data.cell.styles.fillColor = [40, 127, 186]; // Cambia el color de fondo
+                }
+                if (data.row.index === data.table.body.length - 1) {
+                    data.cell.styles.fillColor = [19, 208, 10]; // Cambia el color de fondo
+                    data.cell.styles.textColor = [0, 0, 0]; // Cambia el color del texto
                 }
               }
         })

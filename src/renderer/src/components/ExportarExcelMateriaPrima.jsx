@@ -95,14 +95,35 @@ export default function ExportarExcelMP({data}) {
                         E: '',
                         F: '',
                         G: '',
+                        H: '',
                         I: '',
                     })
                 });
             });
-        });      
+        }); 
+        let total = 0
+        let totalOperacion = 0
+        data.forEach(element => {
+            element.subRows.forEach(subRowFecha => {
+                total = parseFloat(total) + parseFloat(subRowFecha.total)
+                totalOperacion = parseFloat(totalOperacion) + parseFloat(subRowFecha.totalOperacion)
+            });
+        });
+        tabla.push({
+            A: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            B: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            C: {v: 'TOTAL DEL DOCUMENTO', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            D: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            E: {v: total + '$', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            F: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            G: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            H: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            I: {v: totalOperacion + '$', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+        }) 
+     
         
         const dataFinal = [...titulo, ...tabla]
-        console.log('datwa', tabla)
+        
         setTimeout(() => {
             creandoArchivo(dataFinal)
             setLoading(false);
@@ -129,7 +150,7 @@ export default function ExportarExcelMP({data}) {
         hoja['!cols'] = propiedades;
 
         XLSX.utils.book_append_sheet(libro, hoja, 'data');
-        XLSX.writeFile(libro, 'dataDesdeElBoton.xlsx')
+        XLSX.writeFile(libro, 'ReporteMateriaPrima.xlsx')
     }
 
     return (
@@ -140,7 +161,7 @@ export default function ExportarExcelMP({data}) {
                 onClick={()=>{
                     handleDownload()
                 }}
-            >Exportar</Button>
+            >Excel</Button>
         </>
     );
 }

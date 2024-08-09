@@ -25,7 +25,6 @@ export default function ExportarExcel({data}) {
         }]
 
         data.map((data) => {
-            console.log(data)
             tabla.push({
                 A: data.zona,
                 B: '',
@@ -88,11 +87,24 @@ export default function ExportarExcel({data}) {
                     })
                 })
             })
-        });  
+        });
+        let montoOriginal = 0
+        data.forEach(element => {
+            element.subRows.forEach(subRowFecha => {
+                montoOriginal = parseFloat(montoOriginal) + parseFloat(subRowFecha.montoOriginal)
+            });
+        });
+        tabla.push({
+            A: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            B: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            C: {v: 'TOTAL DEL DOCUMENTO', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            D: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            E: {v: montoOriginal + '$', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            F: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            G: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+        })  
         
         const dataFinal = [...titulo, ...tabla]
-
-        console.log('data', tabla)
 
         setTimeout(() => {
             creandoArchivo(dataFinal)
