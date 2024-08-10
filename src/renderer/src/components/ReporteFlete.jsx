@@ -17,6 +17,7 @@ import { ProveedoresFleteCedulaAtom } from '../atoms/ProveedorFleteCedula';
 import { DataFleteAtom, DataFleteJsonAtom} from '../atoms/DataFleteAtom';
 import ExportarFletePDF from './ExportarFletePDF';
 import ExportarExcelFlete from './ExportarExcelFlete';
+import { MateriaPrimaFleteAtom } from '../atoms/MateriaPrimaAtom';
 
 export default function ReportesFlete() {
 
@@ -26,6 +27,8 @@ export default function ReportesFlete() {
   const fechaInicio = useAtomValue(fechaInicioAtom);
   const [fleteData, setFleteData] = useAtom(DataFleteAtom)
   const fleteDataJson = useAtomValue(DataFleteJsonAtom);
+  const materiaPrima = useAtomValue(MateriaPrimaFleteAtom);
+
 
   const handleChangeActivo = (event) => {
     setValueActivo(event.target.value);
@@ -37,6 +40,7 @@ export default function ReportesFlete() {
     let proveedorStatusQuery = "";
     let proveedorStatusValue = valueActivo;
     let proveedorQuery = ""
+    let materiaPrimaQuery = ""
 
     if (proveedorStatusValue === 'si') {
       proveedorStatusQuery = "SPROVEEDOR.FP_STATUS = 1 AND"
@@ -55,11 +59,20 @@ export default function ReportesFlete() {
       }
       proveedoresStringifycados.push(`'${proveedor}'`)
     });
-    console.log(proveedoresStringifycados, 'proveedoresStringifycados')
 
    if (proveedoresStringifycados.length > 0){
      proveedorQuery = `SOPERACIONINV.FTI_RESPONSABLE IN (${proveedoresStringifycados.join(",")}) AND`
    }
+
+   if (materiaPrima.length > 0) {
+
+    let materiasPrimasStringifycados = []
+
+    materiaPrima.forEach((materia) => {
+      materiasPrimasStringifycados.push(`'${materia}'`)
+    });
+    materiaPrimaQuery = `SDETALLECOMPRA.FDI_CODIGO IN (${materiasPrimasStringifycados.join(",")}) AND`
+  }
 
     console.info({
       fechaInicio: fechaInicio.format('DD-MM-YYYY'),
@@ -67,6 +80,7 @@ export default function ReportesFlete() {
       proveedorStatusQuery: proveedorStatusQuery,
       proveedorQuery: proveedorQuery,
       proveedores: proveedores,
+      materiaPrimaQuery: materiaPrimaQuery,
     });
 
     window.api.getFlete({
@@ -74,6 +88,7 @@ export default function ReportesFlete() {
       fechaFin: fechaFin.format('YYYY-MM-DD'),
       proveedorStatusQuery: proveedorStatusQuery,
       proveedorQuery: proveedorQuery,
+      materiaPrimaQuery: materiaPrimaQuery,
     }).then((result) => {
       let placas = {}
       let datosSinprocesar = result
@@ -83,8 +98,6 @@ export default function ReportesFlete() {
 
       let placasArray = Object.keys(placas)
       let placaQuery= ''
-      console.log(datosSinprocesar, 'data')
-      console.log(placasArray, 'placasarray')
 
       let placasStringifycados = []
   
@@ -96,7 +109,6 @@ export default function ReportesFlete() {
 
       if (placasStringifycados.length > 0) {
 
-        console.log(placasStringifycados, 'placasStringifycados')
         placaQuery = `CODIGO IN (${placasStringifycados.join(",")})`
 
         window.api.getPlacasReporteFlete({
@@ -105,8 +117,6 @@ export default function ReportesFlete() {
           result.forEach((row) => {
             placas[row[0]] = row[1]
           })
-
-          console.log(result, 'placa')
 
           let resultProcesado = []
           datosSinprocesar.forEach((row) => {

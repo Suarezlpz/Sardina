@@ -76,7 +76,7 @@ export default function ExportarExcelFlete({data}) {
                     H: {v: 'TOTAL', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
                     I: {v: subRowFecha.subRows.reduce(function(pre, curr){
                         return parseFloat(pre)+parseFloat(curr.totalOperacion);
-                        },0) + '$',  s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+                        },0).toFixed(2) + '$',  s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
                 })
                 tabla.push({
                     A: '',
@@ -106,7 +106,7 @@ export default function ExportarExcelFlete({data}) {
             F: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
             G: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
             H: {v: '', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
-            I: {v: totalOperacion + '$', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
+            I: {v: totalOperacion.toFixed(2) + '$', s: {font: { name: "Arial", sz: 10, bold: true}, fill: { fgColor: { rgb: "13D00A" } }}},
         })
      
 

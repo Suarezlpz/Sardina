@@ -9,7 +9,7 @@ export default function ExportarPDFporPagar({data}) {
 
         doc.text('Reporte Cuentas Por Pagar', 70, 20);
 
-        const colums = ['Zona', 'Fecha', 'Proveedor', 'Documento', 'Monto Original', 'Monto Abono', 'Proxima Fecha']
+        const colums = ['Zona', 'Fecha', 'Proveedor', 'Documento', 'Saldo', 'Abono', 'Fecha A.']
 
         let tabla = []
         data.map((data) => {
@@ -51,10 +51,10 @@ export default function ExportarPDFporPagar({data}) {
                         '',
                         '',
                         '',
-                        'TOTAL',
-                        subRowProveedor.subRows.reduce(function(pre, curr){
+                        {content: 'TOTAL', styles:{fillColor: [19, 208, 10]}},
+                        {content: subRowProveedor.subRows.reduce(function(pre, curr){
                             return parseFloat(pre)+parseFloat(curr.montoOriginal);
-                          },0) + '$',
+                          },0).toFixed(2) + '$', styles:{fillColor: [19, 208, 10]}},
                         '',
                         '',
                     ])
@@ -81,7 +81,7 @@ export default function ExportarPDFporPagar({data}) {
             '',
             'TOTAL DEL DOCUMENTO',
             '',
-            montoOriginal + '$',
+            montoOriginal.toFixed(2) + '$',
             '',
             '',
         ])
@@ -101,11 +101,6 @@ export default function ExportarPDFporPagar({data}) {
                 textColor: [254, 254, 250],
             },
             didParseCell: function (data) {
-                if (data.cell.raw === 'TOTAL') { 
-                  data.cell.styles.fontStyle = 'bold'; // Cambia el estilo de la fuente
-                  data.cell.styles.textColor = [254, 254, 250]; // Cambia el color del texto
-                  data.cell.styles.fillColor = [40, 127, 186]; // Cambia el color de fondo
-                }
                 if (data.row.index === data.table.body.length - 1) {
                     data.cell.styles.fillColor = [19, 208, 10]; // Cambia el color de fondo
                     data.cell.styles.textColor = [0, 0, 0]; // Cambia el color del texto

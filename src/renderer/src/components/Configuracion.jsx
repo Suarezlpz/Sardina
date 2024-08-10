@@ -7,7 +7,10 @@ import { Button } from '@mui/material';
 import Fab from '@mui/material/Fab';
 import SaveIcon from '@mui/icons-material/Save';
 import Snackbar from '@mui/material/Snackbar';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import { SnackbarProvider, useSnackbar } from 'notistack';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Configuracion() {
 
@@ -48,7 +51,6 @@ export default function Configuracion() {
                    setConfig(prev => ({...prev, db_name2: e.target.value}))
                  }} />
             </Box>
-            
 
             <Box width={'65vw'}>
               {config.materias_primas.map((materia_prima, index) => {
@@ -68,7 +70,31 @@ export default function Configuracion() {
                           })
                         }}
                       />
-                      <TextField id={index + 'code'} label="Codigo" variant="standard" value={materia_prima.codigo}/>
+                      <TextField id={index + 'code'} label="Codigo" variant="standard" value={materia_prima.codigo}
+                        onChange={(e) => {
+
+                          setConfig(prev => {
+
+                            let conf = { ...prev }
+
+                              conf.materias_primas[index].codigo = e.target.value
+
+                              return conf
+                          })
+                        }}
+                      />
+                      <IconButton   
+                      onClick={() => {
+                        setConfig(prev => {
+                          let conf = { ...prev }
+                          conf.materias_primas.splice(index, 1);
+
+                          return conf
+                        })
+                      }}                    
+                      >
+                        <DeleteIcon/>
+                      </IconButton>
                     </Stack>
                   </Box>
                 </>
@@ -92,6 +118,19 @@ export default function Configuracion() {
                 })
             }}>
             <SaveIcon />
+          </Fab>
+          <Fab color="success" sx={{position: 'absolute', bottom: 16, right: 80,}} 
+              aria-label="add" onClick={() =>{
+                setConfig(prev => {
+
+                  let conf = { ...prev }
+
+                   conf.materias_primas.push({codigo:'' , materia_prima:''})
+
+                   return conf
+                })
+            }}>
+            <AddBoxIcon />
           </Fab>
         </Box>
     );

@@ -52,8 +52,8 @@ export default function ExportarPDFmateriaPrima({data}) {
                         '',
                         '',
                         subRowFecha.proveedor,
-                        'TOTAL',
-                        subRowFecha.total,
+                        {content: 'TOTAL', styles:{fillColor: [19, 208, 10]}},
+                        {content: subRowFecha.total,styles:{fillColor: [19, 208, 10]}},
                         '',
                         subRowFecha.cantidad,
                         '',
@@ -98,11 +98,11 @@ export default function ExportarPDFmateriaPrima({data}) {
             'TOTAL DEL DOCUMENTO',
             '',
             '',
-            total + '$',
+            total.toFixed(2) + '$',
             '',
             '',
             '',
-            totalOperacion + '$',
+            totalOperacion.toFixed(2)+ '$',
         ])
 
         doc.autoTable({
@@ -120,11 +120,6 @@ export default function ExportarPDFmateriaPrima({data}) {
                 textColor: [254, 254, 250], 
             },
             didParseCell: function (data) {
-                if (data.cell.raw === 'TOTAL') { 
-                  data.cell.styles.fontStyle = 'bold'; // Cambia el estilo de la fuente
-                  data.cell.styles.textColor = [254, 254, 250]; 
-                  data.cell.styles.fillColor = [40, 127, 186]; 
-                }
                 if (data.row.index === data.table.body.length - 1) {
                     data.cell.styles.fillColor = [19, 208, 10];
                     data.cell.styles.textColor = [0, 0, 0]; 

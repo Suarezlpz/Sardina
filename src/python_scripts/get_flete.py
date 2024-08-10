@@ -8,6 +8,7 @@ start_date = sys.argv[2]
 end_date = sys.argv[3]
 proveedor_query = sys.argv[4]
 proveedor_status_query = sys.argv[5]
+materiaPrimaQuery = sys.argv[6]
 # Establece la conexión utilizando el DSN
 conn = pyodbc.connect('DSN=' + dsn)
 # Crea un cursor para ejecutar consultas SQL
@@ -27,7 +28,7 @@ sqlQuery = """
     FROM
         SOPERACIONINV
     JOIN
-        SPROVEEDOR ON SOPERACIONINV.FTI_RESPONSABLE = SPROVEEDOR.FP_CODIGO
+        SPROVEEDOR ON SOPERACIONINV.FTI_RESPONSABLE = SPROVEEDOR.FP_CODIGO AND SPROVEEDOR.FP_DESCRIPCION LIKE '%MP-%'
     JOIN
         SDETALLECOMPRA ON SOPERACIONINV.FTI_DOCUMENTO = SDETALLECOMPRA.FDI_DOCUMENTO
     JOIN
@@ -36,6 +37,7 @@ sqlQuery = """
         (SOPERACIONINV.FTI_FECHAEMISION BETWEEN '{start_date}' AND '{end_date}') AND
         {proveedor_query}
         {proveedor_status_query}
+        {materiaPrimaQuery}
         SOPERACIONINV.FTI_TIPO = 6
         AND SOPERACIONINV.FTI_STATUS = 1
     GROUP BY 
@@ -46,7 +48,7 @@ sqlQuery = """
         SOPERACIONINV.FTI_DOCUMENTO, 
         SINVENTARIO.FI_DESCRIPCION,
         SDETALLECOMPRA.FDI_CANTIDAD;
-""".format(start_date=start_date, end_date=end_date, proveedor_query=proveedor_query, proveedor_status_query=proveedor_status_query)
+""".format(start_date=start_date, end_date=end_date, proveedor_query=proveedor_query, proveedor_status_query=proveedor_status_query, materiaPrimaQuery=materiaPrimaQuery)
 
 cursor.execute(sqlQuery)
 # Recupera los resultados

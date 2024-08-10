@@ -34,19 +34,19 @@ const columns = ([
   },
   {
     accessorKey: 'montoOriginal',
-    header: 'MONTO ORIGINAL',
+    header: 'SALDO',
     grow: false,
     size: 50,
   },
   {
     accessorKey: 'abono',
-    header: 'SALDO PENDIENTE',
+    header: 'ABONO',
     grow: false,
     size: 50,
   },
   {
     accessorKey: 'fechaProx',
-    header: 'PROXIMA FECHA',
+    header: 'FECHA A.',
     grow: false, //don't allow this column to grow to fill in remaining space - new in v2.8
     size: 50, //small column
   }
@@ -58,6 +58,14 @@ export default function TablaPorPagar() {
   const porPagar = useAtomValue(PorPagarAtom);
   const [porPagarJson, setPorPagarJson] = useAtom(PorPagarJsonAtom)
   const [groupsPrecessed, setGroupsPrecessed] = useState([]);
+
+  let proveedorFormateado = []
+  if(porPagar != ''){
+    proveedorFormateado = porPagar.map(item => {
+        item.proveedor = item.proveedor.replace(/\[MP\-\SE\]|\(MP\s*SE\)|\[SE\]|\[MP\]|\(SE\s*MP\)|\(MP\-\SE\)|\(SE\)|\(MP\)|\[SE\-\MP\]/g, '').trim();
+        return item;
+    });
+  }
 /*
   const rows = porPagar;
   var groups = Object.groupBy(rows, ({ fecha }) => fecha);
@@ -97,7 +105,7 @@ export default function TablaPorPagar() {
           const subRows2 = Object.entries(groupsByProveedor).map(([k3, v3]) => {
             return {
               proveedor: k3,
-              montoOriginal: v3.reduce((acc, x) => acc + Number(x.montoOriginal), 0) + '$',
+              montoOriginal: v3.reduce((acc, x) => acc + Number(x.montoOriginal), 0).toFixed(2) + '$',
               subRows: v3.map((v4) => ({
                 id: v4.id,
                 montoOriginal: v4.montoOriginal + '$',
@@ -108,7 +116,7 @@ export default function TablaPorPagar() {
           });
           return {
             fecha: v2[0].fecha,
-            montoOriginal: v2.reduce((acc, x) => acc + Number(x.montoOriginal), 0) + '$',
+            montoOriginal: v2.reduce((acc, x) => acc + Number(x.montoOriginal), 0).toFixed(2) + '$',
             subRows: subRows2
           };
         });

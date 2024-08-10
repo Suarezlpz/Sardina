@@ -9,7 +9,7 @@ export default function ExportarFletePDF({data}) {
 
         doc.text('Reporte Flete', 130, 20);
 
-        const colums = ['Fecha', 'Fletero', 'Chofer', 'Placa', 'Documento', 'Ruta', 'Cantidad Viajes', 'Precio', 'Total Operacion']
+        const colums = ['Fecha', 'Fletero', 'Chofer', 'Placa', 'Documento', 'Producto', 'Cantidad Viajes', 'Precio', 'Total Operacion']
 
         let tabla = []
         data.map((data) => {
@@ -19,7 +19,7 @@ export default function ExportarFletePDF({data}) {
             data.subRows.map((subRowFecha) => {
                 tabla.push([
                     '',
-                    subRowFecha.fletero,
+                    {content: subRowFecha.fletero,/* rowSpan: subRowFecha.subRows.length + 1*/},
                     '',
                     '',
                     '',
@@ -49,10 +49,10 @@ export default function ExportarFletePDF({data}) {
                     '',
                     '',
                     '',
-                    'TOTAL',
-                    subRowFecha.subRows.reduce(function(pre, curr){
+                    {content:'TOTAL', styles:{fillColor: [19, 208, 10]}},
+                    {content: subRowFecha.subRows.reduce(function(pre, curr){
                         return parseFloat(pre)+parseFloat(curr.totalOperacion);
-                      },0) + '$',
+                      },0).toFixed(2) + '$', styles:{fillColor: [19, 208, 10]}}
                 ])
                 tabla.push([
                     '',
@@ -82,7 +82,7 @@ export default function ExportarFletePDF({data}) {
             '',
             '',
             '',
-            totalOperacion + '$',
+            totalOperacion.toFixed(2) + '$',
         ])
 
         doc.autoTable({
@@ -100,11 +100,6 @@ export default function ExportarFletePDF({data}) {
                 textColor: [254, 254, 250],
             },
             didParseCell: function (data) {
-                if (data.cell.raw === 'TOTAL') { 
-                  data.cell.styles.fontStyle = 'bold'; // Cambia el estilo de la fuente
-                  data.cell.styles.textColor = [254, 254, 250]; // Cambia el color del texto a rojo
-                  data.cell.styles.fillColor = [40, 127, 186]; // Cambia el color de fondo
-                }
                 if (data.row.index === data.table.body.length - 1) {
                     data.cell.styles.fillColor = [19, 208, 10];
                     data.cell.styles.textColor = [0, 0, 0]; // Cambia el color del texto

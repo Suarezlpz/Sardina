@@ -39,7 +39,7 @@ const columns = ([
   },
   {
     accessorKey: 'ruta',
-    header: 'RUTA',
+    header: 'PRODUCTO',
     grow: false,
     size: 50,
   },
@@ -70,6 +70,14 @@ export default function TablaFlete() {
   const [dataFleteJson, setDataFleteJson] = useAtom(DataFleteJsonAtom)
   const [groupsPrecessed, setGroupsPrecessed] = useState([]);
 
+  let fleteroFormateado = []
+  if(dataFlete != ''){
+    fleteroFormateado = dataFlete.map(item => {
+        item.fletero = item.fletero.replace(/\[MP\-\SE\]|\(MP\s*SE\)|\[SE\]|\[MP\]|\(SE\s*MP\)|\(MP\-\SE\)|\(SE\)|\(MP\)|\[SE\-\MP\]|\[MP\s*SE\]/g, '').trim();
+        return item;
+    });
+  }
+
     useEffect(() => {
       const rows = dataFlete;
       const groups = _.groupBy(rows, 'fecha');
@@ -78,7 +86,7 @@ export default function TablaFlete() {
         const subRows = Object.entries(groupsByFecha).map(([k2, v2]) => {
           return {
             fletero: v2[0].fletero,
-            totalOperacion: v2.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
+            totalOperacion: v2.reduce((acc, x) => acc + Number(x.totalOperacion), 0).toFixed(2) + '$',
             subRows: v2.map((v3) => ({
               placa: v3.placa,
               chofer: v3.chofer,

@@ -143,7 +143,7 @@ app.whenReady().then(() => {
       app.isPackaged ? path.join(process.resourcesPath, 'extraResources/python_scripts','get_flete.py') : 'src/python_scripts/get_flete.py',
       {
         mode: 'text',
-        args: [readConfigData().db_name, args.fechaInicio, args.fechaFin, args.proveedorQuery, args.proveedorStatusQuery]
+        args: [readConfigData().db_name, args.fechaInicio, args.fechaFin, args.proveedorQuery, args.proveedorStatusQuery, args.materiaPrimaQuery]
       }
     )
     return JSON.parse(messages[0])

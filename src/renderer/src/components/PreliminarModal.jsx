@@ -63,6 +63,14 @@ export default function PreliminarModal() {
   const [datosProcesados, setDatosProcesados] = useAtom(DatosProcesadosJsonAtom)
   const [groupsPrecessed, setGroupsPrecessed] = useState([]);
 
+  let proveedorFormateado = []
+  if(datosProcesadosAtom != ''){
+    proveedorFormateado = datosProcesadosAtom.map(item => {
+        item.proveedor = item.proveedor.replace(/\[MP\-\SE\]|\(MP\s*SE\)|\[SE\]|\[MP\]|\(SE\s*MP\)|\(MP\-\SE\)|\(SE\)|\(MP\)|\[SE\-\MP\]|\[MP\s*SE\]/g, '').trim();
+        return item;
+    });
+  }
+
   useEffect(() => {
     const rows = datosProcesadosAtom;
     const groups = _.groupBy(rows, 'zona');
@@ -74,9 +82,9 @@ export default function PreliminarModal() {
     
           return ({
             proveedor: v3[0].proveedor,
-            total: v3.reduce((acc, x) => acc + Number(x.total), 0) + '$',
-            cantidad: v3.reduce((acc, x) => acc + Number(x.cantidad), 0),
-            totalOperacion: v3.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
+            total: v3.reduce((acc, x) => acc + Number(x.total), 0).toFixed(2) + '$',
+            cantidad: v3.reduce((acc, x) => acc + Number(x.cantidad), 0).toFixed(2),
+            totalOperacion: v3.reduce((acc, x) => acc + Number(x.totalOperacion), 0).toFixed(2) + '$',
             subRows: v3.map((v4) => ({
                 id: v4.id,
                 producto: v4.producto,
@@ -89,9 +97,9 @@ export default function PreliminarModal() {
         })
         return ({
           fecha: v2[0].fecha,
-          total: v2.reduce((acc, x) => acc + Number(x.total), 0) + '$',
-          cantidad: v2.reduce((acc, x) => acc + Number(x.cantidad), 0),
-          totalOperacion: v2.reduce((acc, x) => acc + Number(x.totalOperacion), 0) + '$',
+          total: v2.reduce((acc, x) => acc + Number(x.total), 0).toFixed(2) + '$',
+          cantidad: v2.reduce((acc, x) => acc + Number(x.cantidad), 0).toFixed(2),
+          totalOperacion: v2.reduce((acc, x) => acc + Number(x.totalOperacion), 0).toFixed(2) + '$',
           subRows: subRows2
         })
       })

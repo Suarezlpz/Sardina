@@ -4,17 +4,20 @@ import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import { useAtomValue, useAtom } from 'jotai';
 import { useTheme } from '@mui/material/styles';
-import { ZonasSeleccionadasAtom } from '../atoms/ZonasSeleccionadasAtom';
 import RangoFecha from './RangoFecha';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import { ProveedoresFleteCedulaAtom } from '../atoms/ProveedorFleteCedula';
+import { MateriaPrimaFleteAtom } from '../atoms/MateriaPrimaAtom';
 
 export default function FiltroFlete() {
 
   const [proveedorFleteCedula, setProveedorFleteCedula] = useAtom(ProveedoresFleteCedulaAtom);
   const [proveedores, setProveedores] = React.useState([]);
+
+  const [materiaPrima, setMateriaPrima] = useAtom(MateriaPrimaFleteAtom);
+  const [materiaPrimaSelect, setMateriaPrimaSelect] = useState([])
 
   const theme = useTheme();
 
@@ -22,47 +25,22 @@ export default function FiltroFlete() {
 
     let tempProveedores = []
     window.api.getProveedorFlete().then((result) => {
-
       result.forEach((proveedor) => {
         tempProveedores.push(createDataProveedor(...proveedor))
       })
       setProveedores(tempProveedores);
+      setProveedorFleteCedula([]);
+    })
+
+    window.api.getConfiguration().then((result) => {
+      setMateriaPrimaSelect(result.materias_primas)
+      setMateriaPrima([])
     })
 
   }, [])
 
   return (
       <Box flexDirection={'row'} display={'flex'} flexGrow={1}>
-       {/* <FormControl sx={{ m: 1, width: '12vw'}}>
-          <Autocomplete
-            multiple
-            limitTags={1}
-            id="checkboxes-tags-demo"
-            options={proveedores}
-            disableCloseOnSelect
-            getOptionLabel={(option) => option.ci + ' - ' + option.name}
-            onChange={(event, newValue) => {
-              setProveedorCedula([ ...newValue ].map(x => x.ci));
-            }}
-            renderTags={(tagValue, getTagProps) =>
-              tagValue.map((option, index) => {
-                const { key, ...tagProps } = getTagProps({ index });
-                return (
-                  <Chip
-                    variant="outlined"
-                    key={key}
-                    label={option.ci + ' - ' + option.name}
-                    {...tagProps}
-                  />
-                );
-              })
-            }
-            renderInput={(params) => (
-              <TextField {...params} label="Chofer" />
-            )}
-          />
-        </FormControl> */}
-
         <FormControl sx={{ m: 1, width: '12vw'}}>
           <Autocomplete
             multiple
@@ -92,7 +70,7 @@ export default function FiltroFlete() {
             )}
           />
         </FormControl>
-       {/* <FormControl sx={{ m: 1, width: '12vw'}}>
+      <FormControl sx={{ m: 1, width: '12vw'}}>
           <Autocomplete
               multiple
               limitTags={1}
@@ -120,7 +98,7 @@ export default function FiltroFlete() {
                 <TextField {...params} label="Materia Prima" />
               )}
             />
-        </FormControl>*/}
+        </FormControl> 
         <RangoFecha/>
       </Box>
   );
