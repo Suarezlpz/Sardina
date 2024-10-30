@@ -28,6 +28,7 @@ import { HotkeyActivoAtom } from '../atoms/HotkeyActivoAtom';
 import { LoginAtom } from '../atoms/HotkeyActivoAtom';
 import LoginPage from './Login';
 import ReportesFlete from './ReporteFlete';
+import ReporteDetalleDeVenta from './ReporteDetalleDeVenta';
 
 const drawerWidth = 240;
 
@@ -110,6 +111,7 @@ export default function DrawerReporte() {
     {"text": 'Reporte Materia Prima', icon: () => <WidgetsIcon />, getChildren: () => <Reportes/>},
     {"text": 'Reporte Flete', icon: () => <LocalShippingIcon />, getChildren: () => <ReportesFlete/>},
     {"text": 'Reporte Cuentas Por Pagar', icon: () => <LocalShippingIcon />, getChildren: () => <CuentasPorPagar/>},
+    {"text": 'Reporte Detalles de Venta', icon: () => <LocalShippingIcon />, getChildren: () => <ReporteDetalleDeVenta/>},
     
   ];
 
@@ -133,13 +135,13 @@ export default function DrawerReporte() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            { indexDrawer === 3? 'Configuracion': menuItems[indexDrawer].text}
+            { indexDrawer === 4? 'Configuracion': menuItems[indexDrawer].text}
           </Typography>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={()=> {
-              setIndexDrawer(3);
+              setIndexDrawer(4);
             }}
             sx={[
               {
@@ -191,7 +193,7 @@ export default function DrawerReporte() {
       </Drawer>
       <Main open={open} >
         
-        {indexDrawer === 3? (loginAtom == true? <Configuracion/>: <LoginPage/>): menuItems[indexDrawer].getChildren()}
+        {indexDrawer === 4? (loginAtom == true? <Configuracion/>: <LoginPage/>): menuItems[indexDrawer].getChildren()}
 
       </Main>
     </Box>

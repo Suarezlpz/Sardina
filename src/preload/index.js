@@ -13,7 +13,7 @@ const api = {
   getFlete: (args) => ipcRenderer.invoke('get_flete', args),
   getProveedorFlete: () => ipcRenderer.invoke('get_proveedor_flete'),
   getPlacasReporteFlete: (args) => ipcRenderer.invoke('get_placas_reporte_flete', args),
-  
+  getDetallesDeVenta: (args) => ipcRenderer.invoke('get_detalles_de_venta', args),
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

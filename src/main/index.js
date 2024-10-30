@@ -78,6 +78,20 @@ app.whenReady().then(() => {
     return JSON.parse(messages[0])
   })
 
+  ipcMain.handle('get_detalles_de_venta', async (event, args) => {
+    console.log(readConfigData().db_name)
+    let messages = await PythonShell.run(
+      app.isPackaged ? path.join(process.resourcesPath , 'extraResources/python_scripts','get_detalles_de_venta.py') : 'src/python_scripts/get_detalles_de_venta.py',
+      {
+        mode: 'text',
+        args: [readConfigData().db_name, args.fechaInicio, args.fechaFin]
+        
+      }
+    )
+    return JSON.parse(messages[0])
+  })
+
+
   ipcMain.handle('get_placas_reporte_flete', async (event, args) => {
     console.log(process.resourcesPath)
     let messages = await PythonShell.run(
